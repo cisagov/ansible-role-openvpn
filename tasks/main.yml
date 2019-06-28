@@ -22,17 +22,17 @@
 - name: Add ssh public key as authorized key for dev users
   authorized_key:
     user: mark.feldhousen
-    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMAreqS1ayc
-    ngT1qQAsXfo7/hzt8JdSvC1bD9Sr0WpTUVWWe6WW2mYQ9fHAYJ4pPGb
-    /Jf3h15NRMHCwsMPuFoP+9m7iebzvS47/ce1g07AOK3bf2yR12v/S9Q
-    FArgAyabqRpDz43yay2t+3IjSHxZlKKNg0nV4xiP/LRqXvzFCjZDAu5
-    zslFH/urZ6bhHxQMywWdW0RHfWXdz+O6rGR8f1soCPw7ylwf2AzlaeC
-    R/WnT9QiK5TG5TxrkomnliE56T0JkhldGrTldkt2NK1R9+3wF4603nQ
-    qKkcCgXFtZKk0wKc5T+Z/B/mS9LW0ayarj1V6H1i5mpscYOD33Z6Hal
-    EXd25XO31oCDt9FuA7pHOZQInTpvNODktjwkkz0Dk6i6q3b60JaviB5
-    ECaC9bcQDfXFGVNzA/+UVtOIKOKmp7ge8n31jEEq6nklDxrVkA/7n7c
-    KXjUTZbV5Lru+3of8lLdYCcJhcLLMDSmJbGtw7/AN55+vxj072pLs1L
-    AUcDBlEtqq5rShUcFeFDuxl0Cs7BRab87h6nO/uIKTAb4ZNbAKt0BuK
-    W2gzRoVjUhibMLc/loJyeZuWa67QQ8Ae76h24dPUz44Ryul/X5LHing
-    Gd3lwQMyW/0mjpVKjC0lsUsGa+J2wezsMzxr8sj9TjYzhMCURf79E6D
-    BUO1zUuFc0kyw== mark.feldhousen'
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMAreqS1ayc\
+    ngT1qQAsXfo7/hzt8JdSvC1bD9Sr0WpTUVWWe6WW2mYQ9fHAYJ4pPGb\
+    /Jf3h15NRMHCwsMPuFoP+9m7iebzvS47/ce1g07AOK3bf2yR12v/S9Q\
+    FArgAyabqRpDz43yay2t+3IjSHxZlKKNg0nV4xiP/LRqXvzFCjZDAu5\
+    zslFH/urZ6bhHxQMywWdW0RHfWXdz+O6rGR8f1soCPw7ylwf2AzlaeC\
+    R/WnT9QiK5TG5TxrkomnliE56T0JkhldGrTldkt2NK1R9+3wF4603nQ\
+    qKkcCgXFtZKk0wKc5T+Z/B/mS9LW0ayarj1V6H1i5mpscYOD33Z6Hal\
+    EXd25XO31oCDt9FuA7pHOZQInTpvNODktjwkkz0Dk6i6q3b60JaviB5\
+    ECaC9bcQDfXFGVNzA/+UVtOIKOKmp7ge8n31jEEq6nklDxrVkA/7n7c\
+    KXjUTZbV5Lru+3of8lLdYCcJhcLLMDSmJbGtw7/AN55+vxj072pLs1L\
+    AUcDBlEtqq5rShUcFeFDuxl0Cs7BRab87h6nO/uIKTAb4ZNbAKt0BuK\
+    W2gzRoVjUhibMLc/loJyeZuWa67QQ8Ae76h24dPUz44Ryul/X5LHing\
+    Gd3lwQMyW/0mjpVKjC0lsUsGa+J2wezsMzxr8sj9TjYzhMCURf79E6D\
+    BUO1zUuFc0kyw== mark.feldhousen"
