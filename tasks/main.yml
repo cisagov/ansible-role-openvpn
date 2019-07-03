@@ -1,2 +1,28 @@
 ---
 # tasks file for openvpn
+
+- name: Install OpenVPN
+  package:
+    name: openvpn
+    state: present
+
+- name: Copy configuration OpenVPN
+  copy:
+    src: cal.conf
+    dest: /etc/openvpn/server/
+
+# TODO: setup certs
+
+# Unless you do this, systemd can sometimes get confused when you try
+# to start a service you just installed
+- name: Systemd daemon-reload
+  systemd:
+    daemon_reload: true
+  when:
+    - ansible_service_mgr == "systemd"
+
+- name: Enable OpenVPN
+  service:
+    name: openvpn-server@cal
+    enabled: yes
+    state: started
