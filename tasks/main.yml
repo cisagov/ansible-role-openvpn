@@ -10,14 +10,14 @@
   copy:
     src: cal.conf
     owner: root
-    mode: 600
+    mode: 0600
     dest: /etc/openvpn/server/
 
 - name: Copy OpenVPN crypto matter from SSM
   copy:
     src: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
     owner: root
-    mode: 600
+    mode: 0600
     dest: /etc/openvpn/server/
   with_items:
     - ca.crt
