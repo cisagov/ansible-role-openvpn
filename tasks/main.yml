@@ -6,12 +6,25 @@
     name: openvpn
     state: present
 
-- name: Copy configuration OpenVPN
+- name: Copy OpenVPN config from files
   copy:
     src: cal.conf
+    owner: root
+    mode: 600
     dest: /etc/openvpn/server/
 
-# TODO: setup certs
+- name: Copy OpenVPN crypto matter from SSM
+  copy:
+    src: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
+    owner: root
+    mode: 600
+    dest: /etc/openvpn/server/
+  with_items:
+    - ca.crt
+    - dh2048.pem
+    - server.crt
+    - server.key
+    - ta.key
 
 # Unless you do this, systemd can sometimes get confused when you try
 # to start a service you just installed
