@@ -57,7 +57,7 @@ Here's how to use it in a playbook:
   become: yes
   become_method: sudo
   roles:
-    - skeleton
+    - openvpn
 ```
 
 ## Contributing ##
