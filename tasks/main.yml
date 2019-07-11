@@ -15,10 +15,10 @@
 
 - name: Copy OpenVPN crypto matter from SSM
   copy:
-    src: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
+    content: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
     owner: root
     mode: 0600
-    dest: /etc/openvpn/server/
+    dest: /etc/openvpn/server/{{ item }}
   with_items:
     - ca.crt
     - dh2048.pem
