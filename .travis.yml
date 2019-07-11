@@ -52,9 +52,10 @@ before_install:
       "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_ZIP}"
   - sudo unzip -d /opt/terraform "${CURL_CACHE_DIR}/${TERRAFORM_ZIP}"
   - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+  - pip install travis-wait-improved
 
 install:
   - pip install --upgrade -r requirements-test.txt
 script:
   - pre-commit run --all-files
-  - molecule test
+  - travis-wait-improved --timeout 30m molecule test
