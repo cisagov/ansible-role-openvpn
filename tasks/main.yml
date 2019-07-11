@@ -21,7 +21,7 @@
     dest: /etc/openvpn/server/{{ item }}
   with_items:
     - ca.crt
-    - dh2048.pem
+    - dh4096.pem
     - server.crt
     - server.key
     - ta.key
