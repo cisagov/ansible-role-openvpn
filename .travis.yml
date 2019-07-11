@@ -31,12 +31,27 @@ env:
       l4my3Pn3PmaD09dGTOoOjto0bcz1zDHD7pCCM9LHLC6CGw5CWgxzgnFosXCrVPn9gJR8Z\
       t80H8Ohu5OQw4TKh8b2REkFQl2GNvIR6f5G49OgdKykb1YpiyRJqn+7lPwYBDQSS5301A\
       Jc="
+    - CURL_CACHE_DIR="$HOME/.cache/curl"
+    - TERRAFORM_VERSION="0.12.3"
+    - TERRAFORM_ZIP="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 
-# Cache pip packages and pre-commit plugins to speed up builds
+# Cache pip packages, pre-commit plugins, and some curl downloads to
+# speed up builds
 cache:
   pip: true
   directories:
     - $HOME/.cache/pre-commit
+    - $CURL_CACHE_DIR
+
+before_install:
+  # Make a cache directory for curl downloads
+  - mkdir -p $CURL_CACHE_DIR
+  # Install terraform
+  - curl --output "${CURL_CACHE_DIR}/${TERRAFORM_ZIP}"
+      --time-cond "${CURL_CACHE_DIR}/${TERRAFORM_ZIP}" --location
+      "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_ZIP}"
+  - sudo unzip -d /opt/terraform "${CURL_CACHE_DIR}/${TERRAFORM_ZIP}"
+  - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
 
 install:
   - pip install --upgrade -r requirements-test.txt
