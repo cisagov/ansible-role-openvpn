@@ -4,13 +4,37 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/context:python)
 
-This is a skeleton project that can be used to quickly get a new
-[cisagov](https://github.com/cisagov) Ansible role GitHub project
-started.  This skeleton project contains [licensing
-information](LICENSE), as well as [pre-commit
-hooks](https://pre-commit.com) and a [Travis
-CI](https://travis-ci.com) configuration appropriate for an Ansible
-role.
+Ansible role for configuring an [OpenVPN](https://openvpn.net) server.
+
+## Pre-requisites ##
+
+This project requires a build user to exist in AWS.  The accompanying terraform
+code will create the user with the appropriate name and permissions.  This only
+needs to be run once per project, per AWS account.  This user will also be used by
+Travis-CI.
+
+```console
+cd terraform
+terraform init --upgrade=true
+terraform apply
+```
+
+Once the user is created you will need to update the `.travis.yml` file with the
+new encrypted environment variables.
+
+```console
+terraform state show module.iam_user.aws_iam_access_key.key
+```
+
+Take the `id` and `secret` fields from the above command's output and [encrypt
+and place in the `.travis.yml` file](https://docs.travis-ci.com/user/encryption-keys/).
+
+Here is an example of encrypting the credentials for Travis:
+
+```console
+ travis encrypt --com --no-interactive "AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxx"
+ travis encrypt --com --no-interactive "AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
 
 ## Requirements ##
 
