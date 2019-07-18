@@ -33,7 +33,7 @@
     - ta.key
 
 - name: Fetch DHS CA certificates using fetch_certs.sh
-  shell: ./fetch_certs.sh
+  command: /etc/openvpn/server/fetch_certs.sh
   args:
     chdir: /etc/openvpn/server
     creates: /etc/openvpn/server/certs
