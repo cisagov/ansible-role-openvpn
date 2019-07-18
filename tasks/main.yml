@@ -32,6 +32,12 @@
     - server.key
     - ta.key
 
+- name: Fetch DHS CA certificates using fetch_certs.sh
+  shell: ./fetch_certs.sh
+  args:
+    chdir: /etc/openvpn/server
+    creates: /etc/openvpn/server/certs
+
 # Unless you do this, systemd can sometimes get confused when you try
 # to start a service you just installed
 - name: Systemd daemon-reload
