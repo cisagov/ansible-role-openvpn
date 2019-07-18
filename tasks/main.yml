@@ -27,7 +27,6 @@
     mode: 0600
     dest: /etc/openvpn/server/{{ item }}
   with_items:
-    - ca.crt
     - dh4096.pem
     - server.crt
     - server.key
