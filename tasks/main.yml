@@ -13,7 +13,7 @@
     mode: 0600
     dest: /etc/openvpn/server/
 
-- name: Install certificate fetch sript
+- name: Install certificate fetch script
   copy:
     src: fetch_certs.sh
     owner: root
