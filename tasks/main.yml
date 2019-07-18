@@ -6,6 +6,11 @@
     name: openvpn
     state: present
 
+- name: Install cURL
+  package:
+    name: curl
+    state: present
+
 - name: Copy OpenVPN config from files
   copy:
     src: cal.conf
