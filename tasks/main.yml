@@ -25,6 +25,13 @@
     mode: 0700
     dest: /etc/openvpn/server/
 
+- name: Install common name verification script
+  copy:
+    src: verify-cn.py
+    owner: root
+    mode: 0700
+    dest: /etc/openvpn/server/
+
 - name: Copy OpenVPN crypto matter from SSM
   copy:
     content: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
