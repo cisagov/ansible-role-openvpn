@@ -13,6 +13,13 @@
     mode: 0600
     dest: /etc/openvpn/server/
 
+- name: Install certificate fetch sript
+  copy:
+    src: fetch_certs.sh
+    owner: root
+    mode: 0700
+    dest: /etc/openvpn/server/
+
 - name: Copy OpenVPN crypto matter from SSM
   copy:
     content: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
