@@ -38,7 +38,17 @@ Here is an example of encrypting the credentials for Travis:
 
 ## Requirements ##
 
-None.
+### AWS Systems Manager Parameter Store ###
+
+The following parameters are looked-up in the
+[AWS SSM Parameter store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html):
+
+| Parameter Name             | Contents                  |
+|----------------------------|---------------------------|
+| `/openvpn/server/dh4096.pem` | Diffie Hellman parameters |
+| `/openvpn/server/server.crt` | Server public key         |
+| `/openvpn/server/server.key` | Server private key        |
+| `/openvpn/server/ta.key`     | OpenVPN shared static key |
 
 ## Role Variables ##
 
