@@ -11,6 +11,11 @@
     name: curl
     state: present
 
+- name: Install boto3
+  package:
+    name: python3-boto3
+    state: present
+
 - name: Copy OpenVPN config from files
   copy:
     src: cal.conf
