@@ -13,6 +13,7 @@
 
 - name: Install boto3
   pip:
+    executable: pip3
     name:
       - boto3
 
