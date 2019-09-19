@@ -45,9 +45,6 @@
     mode: 0600
     dest: /etc/openvpn/server/{{ item }}
   with_items:
-    - dh4096.pem
-    - server.crt
-    - server.key
     - ta.key
 
 - name: Fetch DHS CA certificates using fetch_certs.sh
