@@ -38,15 +38,6 @@
     mode: 0700
     dest: /etc/openvpn/server/
 
-- name: Copy OpenVPN crypto matter from SSM
-  copy:
-    content: "{{ lookup('aws_ssm', '/openvpn/server/{{ item }}') }}"
-    owner: root
-    mode: 0600
-    dest: /etc/openvpn/server/{{ item }}
-  with_items:
-    - ta.key
-
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
   command: /etc/openvpn/server/fetch_user_ca_certs.sh
   args:
