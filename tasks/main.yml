@@ -19,7 +19,7 @@
 
 - name: Copy OpenVPN config from files
   copy:
-    src: cal.conf
+    src: primary.conf
     owner: root
     mode: 0600
     dest: /etc/openvpn/server/
@@ -63,6 +63,6 @@
 
 - name: Enable OpenVPN
   service:
-    name: openvpn-server@cal
+    name: openvpn-server@primary
     enabled: yes
     state: started
