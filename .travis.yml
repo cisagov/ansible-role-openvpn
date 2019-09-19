@@ -54,7 +54,8 @@ before_install:
   - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
 
 install:
+  - pip install travis-wait-improved
   - pip install --upgrade -r requirements-test.txt
 script:
   - pre-commit run --all-files
-  - molecule test
+  - travis-wait-improved --timeout 30m molecule test
