@@ -26,7 +26,7 @@
 
 - name: Install certificate fetch script
   copy:
-    src: fetch_certs.sh
+    src: fetch_user_ca_certs.sh
     owner: root
     mode: 0700
     dest: /etc/openvpn/server/
@@ -47,8 +47,8 @@
   with_items:
     - ta.key
 
-- name: Fetch DHS CA certificates using fetch_certs.sh
-  command: /etc/openvpn/server/fetch_certs.sh
+- name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
+  command: /etc/openvpn/server/fetch_user_ca_certs.sh
   args:
     chdir: /etc/openvpn/server
     creates: /etc/openvpn/server/certs
