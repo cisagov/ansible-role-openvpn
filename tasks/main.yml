@@ -38,18 +38,6 @@
     mode: 0700
     dest: /etc/openvpn/server/
 
-- name: Generate fresh Diffie-Hellman parameters (takes a while)
-  command: openssl dhparam -out dh4096.pem 4096
-  args:
-    chdir: /etc/openvpn/server
-    creates: /etc/openvpn/server/dh4096.pem
-
-- name: Set Diffie-Hellman parameters permissions
-  file:
-    path: /etc/openvpn/server/dh4096.pem
-    owner: root
-    mode: 0600
-
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
   command: /etc/openvpn/server/fetch_user_ca_certs.sh
   args:
