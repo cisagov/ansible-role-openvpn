@@ -6,7 +6,7 @@ provider "aws" {
 module "iam_user" {
   source = "github.com/cisagov/molecule-packer-travisci-iam-user-tf-module"
 
-  ssm_parameters = ["/openvpn/server/*"]
+  ssm_parameters = []
   user_name      = "test-ansible-role-openvpn"
   tags = {
     Team        = "CISA - Development"
