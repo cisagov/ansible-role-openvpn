@@ -56,4 +56,4 @@
   service:
     name: openvpn-server@primary
     enabled: yes
-    state: started
+    state: stopped
