@@ -57,3 +57,10 @@
     name: openvpn-server@primary
     enabled: yes
     state: stopped
+
+- name: Configure OpenVPN service to run after multi-user and cloud-final
+  lineinfile:
+    dest: /lib/systemd/system/openvpn-server@.service
+    regexp: ^After=
+    state: present
+    line: After=network.target multi-user.target cloud-final.service
