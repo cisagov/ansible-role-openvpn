@@ -2,6 +2,7 @@
 """Verify a user's certificate should be permitted access."""
 
 
+import logging
 import sys
 
 import ldap
@@ -10,13 +11,9 @@ ALLOW_USER_CONNECTION_ATTEMPT = 0
 CONTINUE_PROCESSING_CERTIFICATE_CHAIN = 0
 DENY_USER_CONNECTION_ATTEMPT = 1
 LDAP_URI = "ldaps://ipa.cool.cyber.dhs.gov"
+LOG_LEVEL = "INFO"
 REALM = "COOL.CYBER.DHS.GOV"
 VPN_GROUP = "vpnusers"
-
-
-def log(msg):
-    """Pring a log message that will show up in openvpn's logs."""
-    print(f"VERIFY-CN {msg}")
 
 
 def rev_dn_order(dn):
@@ -37,6 +34,7 @@ def query_ldap(ldap_ordered_dn):
     realm_dn = ",".join([f"dc={x.lower()}" for x in REALM.split(".")])
     base_dn = f"cn=users,cn=accounts,{realm_dn}"
     vpngroup_dn = f"cn={VPN_GROUP},cn=groups,cn=accounts,{realm_dn}"
+    logging.debug(f"Searching for user mapped to certificate: {ldap_ordered_dn}")
     rec = con.search_s(
         base_dn,
         ldap.SCOPE_SUBTREE,
@@ -44,25 +42,30 @@ def query_ldap(ldap_ordered_dn):
         attrlist=["memberOf"],
     )
     if len(rec) == 0:
-        log("No matching certificate found in LDAP")
+        logging.warning("No matching certificate found in LDAP")
         return False
 
     if len(rec) > 1:
-        log(f"More than 1 record matched.  Found: {len(rec)}.")
+        logging.warning(f"More than 1 record found in LDAP.  Count: {len(rec)}.")
         return False
 
     user_dn, attribute_list = rec[0]
-    log(f"Found user: {user_dn}")
+    logging.info(f"Found user in LDAP: {user_dn}")
     users_groups = attribute_list.get("memberOf")
     # Check to see if user is a member of the correct group
-    return vpngroup_dn.encode("utf-8") in users_groups
+    permit_user = vpngroup_dn.encode("utf-8") in users_groups
+    if permit_user:
+        logging.info(f"User is member of {vpngroup_dn}")
+    else:
+        logging.warning(f"User IS NOT member of {vpngroup_dn}")
+    return permit_user
 
 
 def main():
     """Check the arguments to see if the CN is valid."""
     _, depth, x509cn = sys.argv
     depth = int(depth)
-    # log(f"Depth:{depth} Subject:{x509cn}")
+    logging.basicConfig(format="VERIFY-CN: %(levelname)s %(message)s", level=LOG_LEVEL)
 
     if depth > 0:
         # We are not at depth 0 (the client certificate)
@@ -71,7 +74,6 @@ def main():
 
     # We are evaluating the user's certificate (depth 0)
     ldap_ordered_dn = rev_dn_order(x509cn)
-    log(f"LDAP-DN: {ldap_ordered_dn}")
 
     if query_ldap(ldap_ordered_dn):
         # The user was authorized by LDAP
