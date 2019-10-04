@@ -3,6 +3,7 @@
 
 
 import logging
+import subprocess  # nosec
 import sys
 
 import ldap
@@ -10,6 +11,7 @@ import ldap
 ALLOW_USER_CONNECTION_ATTEMPT = 0
 CONTINUE_PROCESSING_CERTIFICATE_CHAIN = 0
 DENY_USER_CONNECTION_ATTEMPT = 1
+KEYTAB_FILE = "/etc/krb5.keytab"
 LDAP_URI = "ldaps://ipa.cool.cyber.dhs.gov"
 LOG_LEVEL = "INFO"
 REALM = "COOL.CYBER.DHS.GOV"
@@ -24,6 +26,13 @@ def rev_dn_order(dn):
     """
     # see: https://docs.pagure.org/SSSD.sssd/design_pages/matching_and_mapping_certificates.html#some-notes-about-dns
     return ldap.dn.dn2str(ldap.dn.str2dn(dn)[::-1])
+
+
+def kinit():
+    """Obtain kerberos credentials for LDAP login."""
+    logging.debug("Running kinit")
+    proc = subprocess.run(["/usr/bin/kinit", "-k", "-t", KEYTAB_FILE])  # nosec
+    logging.debug(f"kinit returned {proc.returncode}")
 
 
 def query_ldap(ldap_ordered_dn):
@@ -74,6 +83,9 @@ def main():
 
     # We are evaluating the user's certificate (depth 0)
     ldap_ordered_dn = rev_dn_order(x509cn)
+
+    # Make sure we have valid kerberos credentials
+    kinit()
 
     if query_ldap(ldap_ordered_dn):
         # The user was authorized by LDAP
