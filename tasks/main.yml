@@ -6,6 +6,11 @@
     name: openvpn
     state: present
 
+- name: Install LDAP Python module
+  package:
+    name: python3-ldap
+    state: present
+
 - name: Install cURL
   package:
     name: curl
