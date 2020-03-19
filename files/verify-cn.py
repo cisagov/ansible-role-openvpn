@@ -56,6 +56,7 @@ def query_ldap(ldap_ordered_dn):
     )
     if len(rec) == 0:
         logging.warning("No matching certificate found in LDAP")
+        logging.warning(f"Searched for: {ldap_ordered_dn}")
         return False
 
     if len(rec) > 1:
