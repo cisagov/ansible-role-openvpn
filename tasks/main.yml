@@ -43,6 +43,13 @@
     mode: 0700
     dest: /etc/openvpn/server/
 
+- name: Install common name verification script configuration
+  copy:
+    src: verify-cn.yml
+    owner: root
+    mode: 0400
+    dest: /etc/openvpn/server/
+
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
   command: /etc/openvpn/server/fetch_user_ca_certs.sh
   args:

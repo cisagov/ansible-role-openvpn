@@ -10,15 +10,13 @@ import sys
 # Third-Party Libraries
 import ldap
 import ldap.filter
+import yaml
 
 ALLOW_USER_CONNECTION_ATTEMPT = 0
 CONTINUE_PROCESSING_CERTIFICATE_CHAIN = 0
 DENY_USER_CONNECTION_ATTEMPT = 1
 KEYTAB_FILE = "/etc/krb5.keytab"
-LDAP_URI = "ldaps://ipa.cool.cyber.dhs.gov"
 LOG_LEVEL = "INFO"
-REALM = "COOL.CYBER.DHS.GOV"
-VPN_GROUP = "vpnusers"
 
 
 def rev_dn_order(dn):
@@ -38,14 +36,14 @@ def kinit():
     logging.debug(f"kinit returned {proc.returncode}")
 
 
-def query_ldap(ldap_ordered_dn):
+def query_ldap(ldap_ordered_dn, ldap_uri, realm, vpn_group):
     """Query LDAP server and return True if user should be permitted."""
-    con = ldap.initialize(LDAP_URI)
+    con = ldap.initialize(ldap_uri)
     con.sasl_gssapi_bind_s()
     # Convert realm into a base DN. e.g.; dc=cool,dc=cyber,dc=dhs,dc=gov
-    realm_dn = ",".join([f"dc={x.lower()}" for x in REALM.split(".")])
+    realm_dn = ",".join([f"dc={x.lower()}" for x in realm.split(".")])
     base_dn = f"cn=users,cn=accounts,{realm_dn}"
-    vpngroup_dn = f"cn={VPN_GROUP},cn=groups,cn=accounts,{realm_dn}"
+    vpngroup_dn = f"cn={vpn_group},cn=groups,cn=accounts,{realm_dn}"
     logging.debug(f"Searching for user mapped to certificate: {ldap_ordered_dn}")
     escaped_dn = ldap.filter.escape_filter_chars(ldap_ordered_dn)
     rec = con.search_s(
@@ -81,6 +79,9 @@ def main():
     depth = int(depth)
     logging.basicConfig(format="VERIFY-CN: %(levelname)s %(message)s", level=LOG_LEVEL)
 
+    # load configuration
+    config = yaml.safe_load(open("verify-cn.yml"))
+
     if depth > 0:
         # We are not at depth 0 (the client certificate)
         # Tell OpenVPN to continue processing the chain
@@ -92,7 +93,9 @@ def main():
     # Make sure we have valid kerberos credentials
     kinit()
 
-    if query_ldap(ldap_ordered_dn):
+    if query_ldap(
+        ldap_ordered_dn, config["ldap_uri"], config["realm"], config["vpn_group"]
+    ):
         # The user was authorized by LDAP
         # Tell OpenVPN to allow the connection
         return ALLOW_USER_CONNECTION_ATTEMPT
