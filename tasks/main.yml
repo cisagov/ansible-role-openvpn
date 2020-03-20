@@ -1,20 +1,25 @@
 ---
 # tasks file for openvpn
 
-- name: Install OpenVPN
-  package:
-    name: openvpn
-    state: present
+- name: Load var file with package URL based on the OS type
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}_{{ ansible_distribution_version }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        # The OS family and distribution for Kali is "Kali GNU/Linux",
+        # which is not an allowable file name in Linux due to the
+        # slash.  We will allow Kali to fall through and use the
+        # Debian vars file.
+        - Debian.yml
+      paths:
+        - vars
 
-- name: Install LDAP Python module
+- name: Install curl, OpenVPN, and the python LDAP library
   package:
-    name: python3-ldap
-    state: present
-
-- name: Install cURL
-  package:
-    name: curl
-    state: present
+    name: "{{ package_names }}"
 
 - name: Install boto3
   pip:
@@ -66,13 +71,13 @@
 
 - name: Enable OpenVPN
   service:
-    name: openvpn-server@primary
+    name: "{{ service_name }}@primary"
     enabled: yes
     state: stopped
 
 - name: Configure OpenVPN service to run after multi-user and cloud-final
   lineinfile:
-    dest: /lib/systemd/system/openvpn-server@.service
+    dest: /lib/systemd/system/{{ service_name }}@.service
     regexp: ^After=
     state: present
     line: After=network.target multi-user.target cloud-final.service
