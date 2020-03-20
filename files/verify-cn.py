@@ -2,11 +2,14 @@
 """Verify a user's certificate should be permitted access."""
 
 
+# Standard Python Libraries
 import logging
 import subprocess  # nosec
 import sys
 
+# Third-Party Libraries
 import ldap
+import ldap.filter
 
 ALLOW_USER_CONNECTION_ATTEMPT = 0
 CONTINUE_PROCESSING_CERTIFICATE_CHAIN = 0
@@ -44,14 +47,16 @@ def query_ldap(ldap_ordered_dn):
     base_dn = f"cn=users,cn=accounts,{realm_dn}"
     vpngroup_dn = f"cn={VPN_GROUP},cn=groups,cn=accounts,{realm_dn}"
     logging.debug(f"Searching for user mapped to certificate: {ldap_ordered_dn}")
+    escaped_dn = ldap.filter.escape_filter_chars(ldap_ordered_dn)
     rec = con.search_s(
         base_dn,
         ldap.SCOPE_SUBTREE,
-        f"(ipaCertMapData=X509:<I>*<S>{ldap_ordered_dn})",
+        f"(ipaCertMapData=X509:<I>*<S>{escaped_dn})",
         attrlist=["memberOf"],
     )
     if len(rec) == 0:
         logging.warning("No matching certificate found in LDAP")
+        logging.warning(f"Searched for: {ldap_ordered_dn}")
         return False
 
     if len(rec) > 1:

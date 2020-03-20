@@ -1,0 +1,12 @@
+---
+# vars file for Debian 9
+
+# The packages to install
+package_names:
+  - curl
+  - openvpn
+  # Debian 9 only supports python2
+  - python-ldap
+
+# The name of the OpenVPN service
+service_name: openvpn-server

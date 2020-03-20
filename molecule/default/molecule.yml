@@ -9,6 +9,21 @@ lint:
     config-data:
       ignore: terraform/.terraform
 platforms:
+  # Amazon Linux 2 does not appear to provide OpenVPN
+  # - name: amazonlinux2_systemd
+  #   image: geerlingguy/docker-amazonlinux2-ansible:latest
+  #   privileged: yes
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   command: /lib/systemd/systemd
+  #   pre_build_image: yes
+  - name: debian9_systemd
+    image: geerlingguy/docker-debian9-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
   - name: debian10_systemd
     image: geerlingguy/docker-debian10-ansible:latest
     privileged: yes
@@ -16,10 +31,67 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: /lib/systemd/systemd
     pre_build_image: yes
-  # - name: amazon2018.03
-  #   image: amazonlinux:2018.03
+  - name: debian11_systemd
+    image: cisagov/docker-debian11-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
+  - name: kali_systemd
+    image: cisagov/docker-kali-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
+  - name: fedora29_systemd
+    image: geerlingguy/docker-fedora29-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
+  # Ansible currently insists on installing python2-dnf, which does
+  # not exist in Fedora 30.  Until that is resolved, we can't use
+  # Fedora 30.
+  # - name: fedora30_systemd
+  #   image: geerlingguy/docker-fedora30-ansible:latest
+  #   privileged: yes
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   command: /lib/systemd/systemd
+  #   pre_build_image: yes
+  - name: fedora31_systemd
+    image: geerlingguy/docker-fedora31-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
+  - name: ubuntu1604_systemd
+    image: geerlingguy/docker-ubuntu1604-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
+  - name: ubuntu1804_systemd
+    image: geerlingguy/docker-ubuntu1804-ansible:latest
+    privileged: yes
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: /lib/systemd/systemd
+    pre_build_image: yes
 provisioner:
   name: ansible
+  config_options:
+    # The OS family and distribution for Kali is "Kali GNU/Linux",
+    # which is not an allowable group name in Ansible due to the space
+    # and the slash.  This option converts those characters to
+    # underscores when creating the group name.
+    defaults:
+      force_valid_group_names: always
   lint:
     name: ansible-lint
 scenario:
