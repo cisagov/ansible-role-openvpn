@@ -17,15 +17,16 @@
       paths:
         - vars
 
-- name: Install curl, OpenVPN, and the python LDAP library
+- name: Install curl, OpenVPN, and the python libraries
   package:
     name: "{{ package_names }}"
 
-- name: Install boto3
+- name: Install boto3 and dnspython
   pip:
     executable: pip3
     name:
       - boto3
+      - dnspython
 
 - name: Copy OpenVPN config from files
   copy:

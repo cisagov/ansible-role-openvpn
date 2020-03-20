@@ -1,4 +1,3 @@
 ---
-ldap_uri: ldaps://ipa.cool.cyber.dhs.gov
 realm: COOL.CYBER.DHS.GOV
 vpn_group: vpnusers

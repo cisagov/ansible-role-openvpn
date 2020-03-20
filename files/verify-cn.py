@@ -8,13 +8,17 @@ import subprocess  # nosec
 import sys
 
 # Third-Party Libraries
+import dns.resolver
 import ldap
 import ldap.filter
 import yaml
 
+# Return code constants
 ALLOW_USER_CONNECTION_ATTEMPT = 0
 CONTINUE_PROCESSING_CERTIFICATE_CHAIN = 0
 DENY_USER_CONNECTION_ATTEMPT = 1
+
+# Configuration constants
 KEYTAB_FILE = "/etc/krb5.keytab"
 LOG_LEVEL = "INFO"
 
@@ -36,8 +40,20 @@ def kinit():
     logging.debug(f"kinit returned {proc.returncode}")
 
 
-def query_ldap(ldap_ordered_dn, ldap_uri, realm, vpn_group):
+def lookup_ldap_uri(realm):
+    """Generate the LDAP URI from DNS service records."""
+    logging.debug(f"Looking up LDAP server for realm {realm}")
+    resolver = dns.resolver.Resolver()
+    answers = resolver.query(f"_ldap._tcp.{realm}", "SRV")
+    hostname = answers[0].target.to_text()[:-1]  # chop of trailing period
+    logging.debug(f"Found LDAP server record: {hostname}")
+    return f"ldaps://{hostname}"
+
+
+def query_ldap(ldap_ordered_dn, realm, vpn_group):
     """Query LDAP server and return True if user should be permitted."""
+    # lookup LDAP server name
+    ldap_uri = lookup_ldap_uri(realm)
     con = ldap.initialize(ldap_uri)
     con.sasl_gssapi_bind_s()
     # Convert realm into a base DN. e.g.; dc=cool,dc=cyber,dc=dhs,dc=gov
@@ -93,9 +109,7 @@ def main():
     # Make sure we have valid kerberos credentials
     kinit()
 
-    if query_ldap(
-        ldap_ordered_dn, config["ldap_uri"], config["realm"], config["vpn_group"]
-    ):
+    if query_ldap(ldap_ordered_dn, config["realm"], config["vpn_group"]):
         # The user was authorized by LDAP
         # Tell OpenVPN to allow the connection
         return ALLOW_USER_CONNECTION_ATTEMPT
