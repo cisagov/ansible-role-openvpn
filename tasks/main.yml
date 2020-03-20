@@ -17,15 +17,16 @@
       paths:
         - vars
 
-- name: Install curl, OpenVPN, and the python LDAP library
+- name: Install curl, OpenVPN, and the python libraries
   package:
     name: "{{ package_names }}"
 
-- name: Install boto3
+- name: Install boto3 and dnspython
   pip:
     executable: pip3
     name:
       - boto3
+      - dnspython
 
 - name: Copy OpenVPN config from files
   copy:
@@ -46,6 +47,13 @@
     src: verify-cn.py
     owner: root
     mode: 0700
+    dest: /etc/openvpn/server/
+
+- name: Install common name verification script configuration
+  copy:
+    src: verify-cn.yml
+    owner: root
+    mode: 0400
     dest: /etc/openvpn/server/
 
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
