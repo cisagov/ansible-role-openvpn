@@ -45,7 +45,7 @@ def lookup_ldap_uri(realm):
     logging.debug(f"Looking up LDAP server for realm {realm}")
     resolver = dns.resolver.Resolver()
     answers = resolver.query(f"_ldap._tcp.{realm}", "SRV")
-    hostname = answers[0].target.to_text()[:-1]  # chop of trailing period
+    hostname = answers[0].target.to_text()[:-1]  # chop off trailing period
     logging.debug(f"Found LDAP server record: {hostname}")
     return f"ldaps://{hostname}"
 
