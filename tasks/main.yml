@@ -15,7 +15,7 @@
         # Debian vars file.
         - Debian.yml
       paths:
-        - vars
+        - "{{ role_path }}/vars"
 
 - name: Install curl, OpenVPN, and the python libraries
   package:
