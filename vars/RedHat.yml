@@ -1,8 +1,8 @@
 ---
 # vars file for RedHat
 
-# The packages to install
-package_names:
+# The packages to install for OpenVPN
+openvpn_package_names:
   - curl
   # On RedHat, c_rehash is not packaged with openvpn but is instead
   # located in the openssl-perl package.
@@ -11,4 +11,15 @@ package_names:
   - python3-ldap
 
 # The name of the OpenVPN service
-service_name: openvpn-server
+openvpn_service_name: openvpn-server
+
+# The package to install for sysctl
+sysctl_package_names:
+  - procps-ng
+
+# The packages to install for iptables persistence
+iptables_persistence_package_names:
+  - iptables-services
+
+# The name of the service providing iptables persistence
+iptables_persistence_service_name: iptables

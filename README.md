@@ -4,7 +4,9 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/context:python)
 
-Ansible role for configuring an [OpenVPN](https://openvpn.net) server.
+Ansible role for installing and configuring an
+[OpenVPN](https://openvpn.net) server.  This role also enables IPv4
+NAT and iptables persistence.
 
 ## Pre-requisites ##
 
