@@ -1,11 +1,11 @@
 ---
-# tasks file for enabling NAT
+# tasks file for enabling NAT and iptables persistence
 
 - name: Install sysctl
   package:
     name: "{{ sysctl_package_names }}"
 
-- name: Enable NAT sysctl value
+- name: Enable NAT sysctl value for IPv4 NAT
   sysctl:
     name: net.ipv4.ip_forward
     value: '1'
