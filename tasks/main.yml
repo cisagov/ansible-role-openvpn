@@ -82,3 +82,6 @@
     regexp: ^After=
     state: present
     line: After=network.target multi-user.target cloud-final.service
+
+- name: Load tasks file for enabling NAT
+  include: enable_nat.yml
