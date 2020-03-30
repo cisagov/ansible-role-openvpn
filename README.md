@@ -4,7 +4,32 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/context:python)
 
-Ansible role for configuring an [OpenVPN](https://openvpn.net) server.
+Ansible role for installing and configuring an
+[OpenVPN](https://openvpn.net) server.  This role also enables IPv4
+NAT and iptables persistence.
+
+Note that this role cannot perform every step necessary to set up NAT.
+Once an instance is started up, one must determine the NAT interface
+and add an iptables rule of the form
+
+```console
+iptables -t nat -A POSTROUTING -s <client_network_cidr> -o <interface_name> -j MASQUERADE
+```
+
+Next, one must save the iptables rules so they become persistent.
+This entails the commands
+
+```console
+iptables-save > /etc/iptables/rules.v4
+```
+
+or
+
+```console
+iptables-save > /etc/sysconfig/iptables
+```
+
+depending on whether the OS family is Debian or RedHat, respectively.
 
 ## Pre-requisites ##
 

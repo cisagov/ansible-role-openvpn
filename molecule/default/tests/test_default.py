@@ -12,7 +12,8 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts("all")
 
 
-@pytest.mark.parametrize("x", [True])
-def test_packages(host, x):
-    """Run a dummy test, just to show what one would look like."""
-    assert x
+@pytest.mark.parametrize("setting", [{"net.ipv4.ip_forward": 1}])
+def test_sysctl_settings(host, setting):
+    """Test that sysctl values were set properly."""
+    for key in setting:
+        assert setting[key] == host.sysctl(key)

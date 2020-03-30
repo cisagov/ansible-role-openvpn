@@ -1,7 +1,7 @@
 ---
 # tasks file for openvpn
 
-- name: Load var file with package URL based on the OS type
+- name: Load var file based on the OS type
   include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
@@ -15,11 +15,11 @@
         # Debian vars file.
         - Debian.yml
       paths:
-        - vars
+        - "{{ role_path }}/vars"
 
 - name: Install curl, OpenVPN, and the python libraries
   package:
-    name: "{{ package_names }}"
+    name: "{{ openvpn_package_names }}"
 
 - name: Install boto3 and dnspython
   pip:
@@ -72,13 +72,16 @@
 
 - name: Enable OpenVPN
   service:
-    name: "{{ service_name }}@primary"
+    name: "{{ openvpn_service_name }}@primary"
     enabled: yes
     state: stopped
 
 - name: Configure OpenVPN service to run after multi-user and cloud-final
   lineinfile:
-    dest: /lib/systemd/system/{{ service_name }}@.service
+    dest: /lib/systemd/system/{{ openvpn_service_name }}@.service
     regexp: ^After=
     state: present
     line: After=network.target multi-user.target cloud-final.service
+
+- name: Load tasks file for enabling NAT
+  include: enable_nat.yml
