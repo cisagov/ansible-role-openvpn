@@ -1,2 +1,3 @@
 boto3
 dnspython
+python3-ldap
