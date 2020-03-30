@@ -23,16 +23,6 @@ KEYTAB_FILE = "/etc/krb5.keytab"
 LOG_LEVEL = "INFO"
 
 
-def rev_dn_order(dn):
-    """Reverse the order of RDNs in a DN.
-
-    X.500 order: DC=com,DC=example,CN=users,CN=Certuser
-    LDAP order:  CN=Certuser,CN=Users,DC=example,DC=com
-    """
-    # see: https://docs.pagure.org/SSSD.sssd/design_pages/matching_and_mapping_certificates.html#some-notes-about-dns
-    return ldap.dn.dn2str(ldap.dn.str2dn(dn)[::-1])
-
-
 def kinit():
     """Obtain kerberos credentials for LDAP login."""
     logging.debug("Running kinit")
@@ -50,7 +40,7 @@ def lookup_ldap_uri(realm):
     return f"ldaps://{hostname}"
 
 
-def query_ldap(ldap_ordered_dn, realm, vpn_group):
+def query_ldap(dn, realm, vpn_group):
     """Query LDAP server and return True if user should be permitted."""
     # lookup LDAP server name
     ldap_uri = lookup_ldap_uri(realm)
@@ -60,8 +50,8 @@ def query_ldap(ldap_ordered_dn, realm, vpn_group):
     realm_dn = ",".join([f"dc={x.lower()}" for x in realm.split(".")])
     base_dn = f"cn=users,cn=accounts,{realm_dn}"
     vpngroup_dn = f"cn={vpn_group},cn=groups,cn=accounts,{realm_dn}"
-    logging.debug(f"Searching for user mapped to certificate: {ldap_ordered_dn}")
-    escaped_dn = ldap.filter.escape_filter_chars(ldap_ordered_dn)
+    logging.debug(f"Searching for user mapped to certificate: {dn}")
+    escaped_dn = ldap.filter.escape_filter_chars(dn)
     rec = con.search_s(
         base_dn,
         ldap.SCOPE_SUBTREE,
@@ -70,7 +60,7 @@ def query_ldap(ldap_ordered_dn, realm, vpn_group):
     )
     if len(rec) == 0:
         logging.warning("No matching certificate found in LDAP")
-        logging.warning(f"Searched for: {ldap_ordered_dn}")
+        logging.warning(f"Searched for: {dn}")
         return False
 
     if len(rec) > 1:
@@ -104,12 +94,14 @@ def main():
         return CONTINUE_PROCESSING_CERTIFICATE_CHAIN
 
     # We are evaluating the user's certificate (depth 0)
-    ldap_ordered_dn = rev_dn_order(x509cn)
+
+    # Normalize the DN by parsing it and re-serializing
+    normalized_dn = ldap.dn.dn2str(ldap.dn.str2dn(x509cn))
 
     # Make sure we have valid kerberos credentials
     kinit()
 
-    if query_ldap(ldap_ordered_dn, config["realm"], config["vpn_group"]):
+    if query_ldap(normalized_dn, config["realm"], config["vpn_group"]):
         # The user was authorized by LDAP
         # Tell OpenVPN to allow the connection
         return ALLOW_USER_CONNECTION_ATTEMPT
