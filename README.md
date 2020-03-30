@@ -13,7 +13,7 @@ Once an instance is started up, one must determine the NAT interface
 and add an iptables rule of the form
 
 ```console
-iptables -t nat -A POSTROUTING -s "${client_network_cidr}" -o "$interface" -j MASQUERADE
+iptables -t nat -A POSTROUTING -s <client_network_cidr> -o <interface_name> -j MASQUERADE
 ```
 
 Next, one must save the iptables rules so they become persistent.
