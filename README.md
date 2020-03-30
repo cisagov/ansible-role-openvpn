@@ -10,7 +10,7 @@ NAT and iptables persistence.
 
 Note that this role cannot perform every step necessary to set up NAT.
 Once an instance is started up, one must determine the NAT interface
-and add an iptables rule:
+and add an iptables rule of the form
 
 ```console
 iptables -t nat -A POSTROUTING -s "${client_network_cidr}" -o "$interface" -j MASQUERADE
