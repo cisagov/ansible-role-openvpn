@@ -10,6 +10,7 @@ env:
   CURL_CACHE_DIR: ~/.cache/curl
   PIP_CACHE_DIR: ~/.cache/pip
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
+  TF_CACHE_DIR: .terraform
 
 jobs:
   lint:
