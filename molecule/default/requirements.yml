@@ -1,3 +1,4 @@
 ---
 - src: https://github.com/cisagov/ansible-role-pip
   name: pip
+  version: bugfix/add-kali-specific-vars
