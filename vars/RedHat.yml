@@ -6,9 +6,9 @@ openvpn_package_names:
   - curl
   # On RedHat, c_rehash is not packaged with openvpn but is instead
   # located in the openssl-perl package.
+  - krb5-devel
   - openssl-perl
   - openvpn
-  - python3-ldap
 
 # The name of the OpenVPN service
 openvpn_service_name: openvpn-server
