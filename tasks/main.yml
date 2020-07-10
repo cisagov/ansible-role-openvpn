@@ -15,16 +15,17 @@
       paths:
         - "{{ role_path }}/vars"
 
-- name: Install curl, OpenVPN, and the python libraries
+- name: Install OpenVPN packages
   package:
     name: "{{ openvpn_package_names }}"
 
-- name: Install boto3 and dnspython
+- name: Install Python packages
   pip:
     executable: pip3
     name:
       - boto3
-      - dnspython
+      - python-freeipa
+      - requests-gssapi
 
 - name: Copy OpenVPN config from files
   copy:
