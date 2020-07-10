@@ -19,14 +19,6 @@
   package:
     name: "{{ openvpn_package_names }}"
 
-- name: Install Python packages
-  pip:
-    executable: pip3
-    name:
-      - boto3
-      - python-freeipa
-      - requests-gssapi
-
 - name: Copy OpenVPN config from files
   copy:
     src: primary.conf
@@ -34,25 +26,14 @@
     mode: 0600
     dest: /etc/openvpn/server/
 
+- name: Load tasks for installing common name verification script
+  include: install_verify_cn.yml
+
 - name: Install certificate fetch script
   copy:
     src: fetch_user_ca_certs.sh
     owner: root
     mode: 0700
-    dest: /etc/openvpn/server/
-
-- name: Install common name verification script
-  copy:
-    src: verify-cn.py
-    owner: root
-    mode: 0700
-    dest: /etc/openvpn/server/
-
-- name: Install common name verification script configuration
-  copy:
-    src: verify-cn.yml
-    owner: root
-    mode: 0400
     dest: /etc/openvpn/server/
 
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
