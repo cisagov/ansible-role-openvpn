@@ -30,38 +30,12 @@ iptables-save > /etc/sysconfig/iptables
 ```
 
 depending on whether the OS family is Debian or RedHat, respectively.
-
-## Pre-requisites ##
-
-This project requires a build user to exist in AWS.  The accompanying terraform
-code will create the user with the appropriate name and permissions.  This only
-needs to be run once per project, per AWS account.  This user will also be used by
-Travis-CI.
-
-```console
-cd terraform
-terraform init --upgrade=true
-terraform apply
-```
-
-Once the user is created you will need to update the `.travis.yml` file with the
-new encrypted environment variables.
-
-```console
-terraform state show module.iam_user.aws_iam_access_key.key
-```
-
-Take the `id` and `secret` fields from the above command's output and [encrypt
-and place in the `.travis.yml` file](https://docs.travis-ci.com/user/encryption-keys/).
-
-Here is an example of encrypting the credentials for Travis:
-
-```console
- travis encrypt --com --no-interactive "AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxx"
- travis encrypt --com --no-interactive "AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-```
+These steps can be performed via cloud-init, as is done
+[here](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
 
 ## Requirements ##
+
+None.
 
 ## Role Variables ##
 
