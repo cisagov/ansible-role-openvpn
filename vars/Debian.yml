@@ -4,8 +4,8 @@
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
+  - libkrb5-dev
   - openvpn
-  - python3-ldap
 
 # The name of the OpenVPN service
 openvpn_service_name: openvpn-server
