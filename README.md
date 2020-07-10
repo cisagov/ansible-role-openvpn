@@ -30,6 +30,8 @@ iptables-save > /etc/sysconfig/iptables
 ```
 
 depending on whether the OS family is Debian or RedHat, respectively.
+These steps can be performed via cloud-init, as is done
+[here](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
 
 ## Requirements ##
 
