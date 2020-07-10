@@ -4,7 +4,6 @@
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
-  - libkrb5-dev
   - openvpn
 
 # The name of the OpenVPN service
@@ -20,3 +19,14 @@ iptables_persistence_package_names:
 
 # The name of the service providing iptables persistence
 iptables_persistence_service_name: netfilter-persistent
+
+# The packages to install to support the common name verification
+# script
+verify_cn_package_names:
+  - libkrb5-dev
+
+# The pip packages to install to support the common name verification
+# script
+verify_cn_pip_package_names:
+  - python-freeipa
+  - requests-gssapi
