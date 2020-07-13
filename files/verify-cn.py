@@ -49,7 +49,7 @@ def load_client_certificate() -> Optional[str]:
     with client_certificate_path.open() as f:
         cert_data: str = f.read()
 
-    # Chop off header, footer, and remote new lines
+    # Chop off header, footer, and remove new lines
     return "".join(cert_data.split("\n")[1:-2])
 
 
