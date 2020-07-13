@@ -6,7 +6,6 @@ openvpn_package_names:
   - curl
   # On RedHat, c_rehash is not packaged with openvpn but is instead
   # located in the openssl-perl package.
-  - krb5-devel
   - openssl-perl
   - openvpn
 
@@ -23,3 +22,16 @@ iptables_persistence_package_names:
 
 # The name of the service providing iptables persistence
 iptables_persistence_service_name: iptables
+
+# The packages to install to support the common name verification
+# script
+verify_cn_package_names:
+  # Fedora 32 does not have gcc installed by default
+  - "@development-tools"
+  - krb5-devel
+
+# The pip packages to install to support the common name verification
+# script
+verify_cn_pip_package_names:
+  - python-freeipa
+  - requests-gssapi

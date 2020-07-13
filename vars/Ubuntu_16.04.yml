@@ -1,17 +1,15 @@
 ---
-# vars file for Ubuntu 16
+# vars file for Ubuntu 16.04
 
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
   - openvpn
-  # Ubuntu 16 only supports python2
-  - python-ldap
 
 # The name of the OpenVPN service
 openvpn_service_name: openvpn
 
-# The package to install for sysctl
+# The packages to install for sysctl
 sysctl_package_names:
   - procps
 
@@ -21,3 +19,16 @@ iptables_persistence_package_names:
 
 # The name of the service providing iptables persistence
 iptables_persistence_service_name: netfilter-persistent
+
+# The packages to install to support the common name verification
+# script
+verify_cn_package_names:
+  # Ubuntu is missing some necessary development tools
+  - build-essential
+  - libkrb5-dev
+
+# The pip packages to install to support the common name verification
+# script
+verify_cn_pip_package_names:
+  - python-freeipa
+  - requests-gssapi
