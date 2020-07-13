@@ -82,5 +82,12 @@
     state: present
     line: After=network.target multi-user.target cloud-final.service
 
+- name: Disable OpenVPN private tmp directory to allow certificate file sharing
+  lineinfile:
+    dest: /lib/systemd/system/{{ openvpn_service_name }}@.service
+    regexp: ^PrivateTmp=
+    state: present
+    line: PrivateTmp=false
+
 - name: Load tasks file for enabling NAT
   include: enable_nat.yml
