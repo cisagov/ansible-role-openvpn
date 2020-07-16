@@ -8,7 +8,6 @@ openvpn_package_names:
   # located in the openssl-perl package.
   - openssl-perl
   - openvpn
-  - python3-ldap
 
 # The name of the OpenVPN service
 openvpn_service_name: openvpn-server
@@ -23,3 +22,17 @@ iptables_persistence_package_names:
 
 # The name of the service providing iptables persistence
 iptables_persistence_service_name: iptables
+
+# The packages to install to support the common name verification
+# script
+verify_cn_package_names:
+  # Fedora 32 does not have gcc installed by default
+  - "@development-tools"
+  - krb5-devel
+
+# The pip packages to install to support the common name verification
+# script
+verify_cn_pip_package_names:
+  - python-freeipa
+  - requests-gssapi
+  - srvlookup

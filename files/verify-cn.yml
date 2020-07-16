@@ -1,3 +1,4 @@
 ---
-realm: COOL.CYBER.DHS.GOV
+log_level: INFO
+realm: STAGING.COOL.CYBER.DHS.GOV
 vpn_group: vpnusers
