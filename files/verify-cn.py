@@ -74,6 +74,8 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
     response = ipa_client.certmap_match(client_certificate)
     logging.debug("Received response from FreeIPA: %s", response)
 
+    matched_uid: str
+
     if response["count"] == 0:
         logging.warning("No matching user found.")
         return False
@@ -82,10 +84,12 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
         logging.warning(
             "More than 1 user matched certificate.  Count: %s.", response["count"]
         )
+        for matched_uid in response["result"][0]["uid"]:
+            logging.warning("Certificate matched uid: %s", matched_uid)
         return False
 
     # Extract username from response
-    matched_uid: str = response["result"][0]["uid"][0]
+    matched_uid = response["result"][0]["uid"][0]
     logging.info("Certificate matched uid: %s", matched_uid)
 
     # Get user data from FreeIPA
