@@ -80,17 +80,27 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
         logging.warning("No matching user found.")
         return False
 
-    if response["count"] > 1:
-        logging.warning(
-            "More than 1 user matched certificate.  Count: %s.", response["count"]
-        )
-        for matched_uid in response["result"][0]["uid"]:
-            logging.warning("Certificate matched uid: %s", matched_uid)
+    # Count is not the number of uids returned.  It is the number of responses.
+    if response["count"] == 1:
+        uid_count: int = len(response["result"][0]["uid"])
+        if uid_count == 0:
+            logging.critical("Unexpected response with no uids: %s", response)
+            return False
+        if uid_count == 1:
+            # Extract username from response
+            matched_uid = response["result"][0]["uid"][0]
+            logging.info("Certificate matched uid: %s", matched_uid)
+        else:  # uid_count > 1
+            logging.warning(
+                "Only 1 user should match a certificate.  Got %s matches...", uid_count,
+            )
+            for matched_uid in response["result"][0]["uid"]:
+                logging.warning("Certificate matched uid: %s", matched_uid)
+            return False
+    else:  # response["count"] != 1
+        # Not sure how this could happen.
+        logging.critical("Unexpected response: %s", response)
         return False
-
-    # Extract username from response
-    matched_uid = response["result"][0]["uid"][0]
-    logging.info("Certificate matched uid: %s", matched_uid)
 
     # Get user data from FreeIPA
     logging.debug("Looking up user record for: %s", matched_uid)
