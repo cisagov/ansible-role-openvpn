@@ -32,3 +32,4 @@ verify_cn_package_names:
 verify_cn_pip_package_names:
   - python-freeipa
   - requests-gssapi
+  - srvlookup
