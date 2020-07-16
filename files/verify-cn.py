@@ -33,7 +33,7 @@ def load_client_certificate() -> Optional[str]:
         client_certificate_path: Path = Path(os.environ[PEER_CERT_VARIABLE])
     except KeyError:
         logging.critical(
-            "OpenVPN did not set the 'peer_cert' environement variable."
+            "OpenVPN did not set the 'peer_cert' environment variable."
             "Ensure 'tls-export-cert' option is set in OpenVPN configuration."
         )
         return None
