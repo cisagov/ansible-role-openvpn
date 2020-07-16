@@ -38,11 +38,12 @@ def load_client_certificate() -> Optional[str]:
         )
         return None
 
-    logging.debug(f"{PEER_CERT_VARIABLE}={client_certificate_path}")
+    logging.debug("%s=%s", PEER_CERT_VARIABLE, client_certificate_path)
 
     if not client_certificate_path.exists():
         logging.critical(
-            f"Certificate file sent from OpenVPN was not found: {client_certificate_path}"
+            "Certificate file sent from OpenVPN was not found: %s",
+            client_certificate_path,
         )
         return None
 
@@ -57,7 +58,7 @@ def kinit() -> None:
     """Obtain kerberos credentials for LDAP login."""
     logging.debug("Running kinit")
     proc = subprocess.run(["/usr/bin/kinit", "-k", "-t", KEYTAB_FILE])  # nosec
-    logging.debug(f"kinit returned {proc.returncode}")
+    logging.debug("kinit returned %s", proc.returncode)
 
 
 def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
@@ -66,12 +67,12 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
     ipa_client: ClientMeta = ClientMeta(dns_discovery=realm)
 
     # Login client in using kerberos credentials
-    logging.debug(f"Logging with kerberos to IPA server for realm: {realm}")
+    logging.debug("Logging with kerberos to IPA server for realm: %s", realm)
     ipa_client.login_kerberos()
 
     logging.debug("Searching for user with matching certificate.")
     response = ipa_client.certmap_match(client_certificate)
-    logging.debug(f"Received response from FreeIPA: {response}")
+    logging.debug("Received response from FreeIPA: %s", response)
 
     if response["count"] == 0:
         logging.warning("No matching user found.")
@@ -79,18 +80,18 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
 
     if response["count"] > 1:
         logging.warning(
-            f"More than 1 user matched certificate.  Count: {response['count']}."
+            "More than 1 user matched certificate.  Count: %s.", response["count"]
         )
         return False
 
     # Extract username from response
     matched_uid: str = response["result"][0]["uid"][0]
-    logging.info(f"Certificate matched uid: {matched_uid}")
+    logging.info("Certificate matched uid: %s", matched_uid)
 
     # Get user data from FreeIPA
-    logging.debug(f"Looking up user record for: {matched_uid}")
+    logging.debug("Looking up user record for: %s", matched_uid)
     user = ipa_client.user_find(matched_uid)["result"][0]
-    logging.debug(f"User record: {user}")
+    logging.debug("User record: %s", user)
 
     group_ok: bool
     account_enabled: bool
@@ -98,34 +99,34 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
 
     # Check to see if user is a member of the group
     if group in user["memberof_group"]:
-        logging.debug(f"{matched_uid} is member of {group}")
+        logging.debug("%s is member of %s", matched_uid, group)
         group_ok = True
     else:
-        logging.warning(f"{matched_uid} is NOT a member of {group}")
+        logging.warning("%s is NOT a member of %s", matched_uid, group)
         group_ok = False
 
     # Check to see if the user's account is active
     if user["nsaccountlock"] is False:
-        logging.debug(f"{matched_uid} account is not locked.")
+        logging.debug("%s account is not locked.", matched_uid)
         account_enabled = True
     else:
-        logging.warning(f"{matched_uid} account IS LOCKED.")
+        logging.warning("%s account IS LOCKED.", matched_uid)
         account_enabled = False
 
     # Check to see if the user's account is active
     if user["preserved"] is False:
-        logging.debug(f"{matched_uid} account is not preserved.")
+        logging.debug("%s account is not preserved.", matched_uid)
         account_not_preserved = True
     else:
-        logging.warning(f"{matched_uid} account IS PRESERVED.")
+        logging.warning("%s account IS PRESERVED.", matched_uid)
         account_not_preserved = False
 
     # Pass judgement on the user
     if group_ok and account_enabled and account_not_preserved:
-        logging.info(f"{matched_uid} will be permitted access.")
+        logging.info("%s will be permitted access.", matched_uid)
         return True
     else:
-        logging.warning(f"{matched_uid} ACCESS DENIED.")
+        logging.warning("%s ACCESS DENIED.", matched_uid)
         return False
 
 
@@ -148,7 +149,7 @@ def main() -> int:
         return CONTINUE_PROCESSING_CERTIFICATE_CHAIN
 
     # We are evaluating the user's certificate (depth 0)
-    logging.debug(f"x509cn = {x509cn}")
+    logging.debug("x509cn = %s", x509cn)
 
     # Load client certificate
     client_certificate = load_client_certificate()
