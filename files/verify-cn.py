@@ -66,7 +66,7 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
     # Create the FreeIPA client
     ipa_client: ClientMeta = ClientMeta(dns_discovery=realm)
 
-    # Login client in using kerberos credentials
+    # Login client using kerberos credentials
     logging.debug("Logging with kerberos to IPA server for realm: %s", realm)
     ipa_client.login_kerberos()
 
