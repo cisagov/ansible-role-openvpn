@@ -5,6 +5,8 @@
 openvpn_package_names:
   - curl
   - openvpn
+  # Needed for the scripts created by cloud-init
+  - python3-boto3
 
 # The name of the OpenVPN service
 openvpn_service_name: openvpn-server
