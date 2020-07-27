@@ -15,6 +15,12 @@
 # Our fix is to ensure that systemd finishes initializing before
 # continuing on to the converge tasks.  For details see:
 # https://www.jeffgeerling.com/blog/2020/resolving-fedora-dnf-error-no-such-file-or-directory-varlibdnfrpmdblockpid
+- name: Group hosts by OS distribution
+  hosts: all
+  tasks:
+    - name: Group hosts by OS distribution
+      group_by:
+        key: os_{{ ansible_distribution }}
 - name: Wait for systemd to complete initialization (Fedora)
   hosts: os_Fedora
   tasks:
