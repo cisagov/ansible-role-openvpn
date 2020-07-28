@@ -1,21 +1,4 @@
 ---
-# The Ubuntu Docker images we are using
-# (geerlingguy/docker-ubuntu1604-ansible:latest and
-# geerlingguy/docker-ubuntu1804-ansible:latest) require a cache update
-# before they can install anything.
-- name: Group hosts by OS distribution
-  hosts: all
-  tasks:
-    - name: Group hosts by OS distribution
-      group_by:
-        key: os_{{ ansible_distribution }}
-- name: Update apt cache (Ubuntu)
-  hosts: os_Ubuntu
-  tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
 # When installing packages during later steps, the Fedora Docker
 # images we are using (geerlingguy/docker-fedora32-ansible:latest and
 # cisagov/docker-fedora33-ansible:latest) can throw sporadic errors
@@ -26,6 +9,12 @@
 # Our fix is to ensure that systemd finishes initializing before
 # continuing on to the converge tasks.  For details see:
 # https://www.jeffgeerling.com/blog/2020/resolving-fedora-dnf-error-no-such-file-or-directory-varlibdnfrpmdblockpid
+- name: Group hosts by OS distribution
+  hosts: all
+  tasks:
+    - name: Group hosts by OS distribution
+      group_by:
+        key: os_{{ ansible_distribution }}
 - name: Wait for systemd to complete initialization (Fedora)
   hosts: os_Fedora
   tasks:
@@ -36,7 +25,9 @@
       retries: 30
       delay: 5
       when: ansible_service_mgr == 'systemd'
-      # This task always runs, no matter what.
-      # Let's ignore this task when running the idempotence check.
-      tags:
-        - molecule-idempotence-notest
+
+- name: Import upgrade playbook
+  import_playbook: upgrade.yml
+
+- name: Import python playbook
+  import_playbook: python.yml
