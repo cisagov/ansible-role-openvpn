@@ -1,10 +1,4 @@
 ---
-- name: Import upgrade playbook
-  import_playbook: upgrade.yml
-
-- name: Import python playbook
-  import_playbook: python.yml
-
 # When installing packages during later steps, the Fedora Docker
 # images we are using (geerlingguy/docker-fedora32-ansible:latest and
 # cisagov/docker-fedora33-ansible:latest) can throw sporadic errors
@@ -31,3 +25,9 @@
       retries: 30
       delay: 5
       when: ansible_service_mgr == 'systemd'
+
+- name: Import upgrade playbook
+  import_playbook: upgrade.yml
+
+- name: Import python playbook
+  import_playbook: python.yml
