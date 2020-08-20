@@ -72,3 +72,10 @@
 
 - name: Load tasks file for enabling NAT
   include: enable_nat.yml
+
+- name: Configure ufw to allow OpenVPN via UDP
+  ufw:
+    comment: Allow OpenVPN via UDP
+    proto: udp
+    rule: allow
+    to_port: openvpn
