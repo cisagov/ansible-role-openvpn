@@ -3,6 +3,8 @@ galaxy_info:
   author: Mark Feldhousen
   description: OpenVPN Ansible role
   company: CISA Cyber Assessments
+  galaxy_tags:
+    - openvpn
   license: CC0
   min_ansible_version: 2.0
   platforms:
@@ -26,8 +28,7 @@ galaxy_info:
       versions:
         - bionic
         - xenial
-  galaxy_tags:
-    - openvpn
+  role_name: openvpn
 
 dependencies:
   - src: https://github.com/cisagov/ansible-role-pip
