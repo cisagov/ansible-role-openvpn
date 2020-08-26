@@ -6,30 +6,31 @@
 
 Ansible role for installing and configuring an
 [OpenVPN](https://openvpn.net) server.  This role also enables IPv4
-NAT and iptables persistence.
+NAT via [ufw](https://wiki.ubuntu.com/UncomplicatedFirewall).
 
 Note that this role cannot perform every step necessary to set up NAT.
 Once an instance is started up, one must determine the NAT interface
-and add an iptables rule of the form
+and add a `nat` table configuration to the top of
+`/etc/ufw/before.rules`:
 
 ```console
-iptables -t nat -A POSTROUTING -s <client_network_cidr> -o <interface_name> -j MASQUERADE
+# nat Table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+
+# Forward VPN client traffic
+-A POSTROUTING -s <client_network_cidr> -o <interface_name> -j MASQUERADE
+
+# don't delete the 'COMMIT' line or these nat table rules won't be processed
+COMMIT
 ```
 
-Next, one must save the iptables rules so they become persistent.
-This entails the commands
+Finally, one must activate the `nat` table rules:
 
 ```console
-iptables-save > /etc/iptables/rules.v4
+ufw disable && ufw enable
 ```
 
-or
-
-```console
-iptables-save > /etc/sysconfig/iptables
-```
-
-depending on whether the OS family is Debian or RedHat, respectively.
 These steps can be performed via cloud-init, as is done
 [here](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
 
@@ -43,7 +44,8 @@ None.
 
 ## Dependencies ##
 
-None.
+* [cisagov/ansible-role-pip](https://github.com/cisagov/ansible-role-pip)
+* [cisagov/ansible-role-ufw](https://github.com/cisagov/ansible-role-ufw)
 
 ## Example Playbook ##
 
