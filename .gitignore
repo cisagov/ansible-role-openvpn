@@ -1,4 +1,9 @@
+__pycache__
 .mypy_cache
+<<<<<<< HEAD
 __pycache__
 .python-version
 terraform/.terraform
+=======
+.python-version
+>>>>>>> 33a4f13016a06edb168ea4069fac97ef6a6a112a
