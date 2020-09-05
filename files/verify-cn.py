@@ -92,7 +92,8 @@ def query_freeipa(client_certificate: str, realm: str, group: str) -> bool:
             logging.info("Certificate matched uid: %s", matched_uid)
         else:  # uid_count > 1
             logging.warning(
-                "Only 1 user should match a certificate.  Got %s matches...", uid_count,
+                "Only 1 user should match a certificate.  Got %s matches...",
+                uid_count,
             )
             for matched_uid in response["result"][0]["uid"]:
                 logging.warning("Certificate matched uid: %s", matched_uid)
