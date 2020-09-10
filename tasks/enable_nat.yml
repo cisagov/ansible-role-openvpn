@@ -1,11 +1,4 @@
 ---
-- name: Set default forward policy to "ACCEPT" for ufw
-  lineinfile:
-    dest: /etc/default/ufw
-    regexp: ^DEFAULT_FORWARD_POLICY=
-    state: present
-    line: DEFAULT_FORWARD_POLICY="ACCEPT"
-
 - name: Enable NAT sysctl value for IPv4 NAT
   lineinfile:
     dest: /etc/ufw/sysctl.conf
