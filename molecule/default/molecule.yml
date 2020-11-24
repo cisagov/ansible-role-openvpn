@@ -53,7 +53,7 @@ platforms:
     command: /lib/systemd/systemd
     pre_build_image: yes
   - name: fedora33_systemd
-    image: cisagov/docker-fedora33-ansible:latest
+    image: geerlingguy/docker-fedora33-ansible:latest
     privileged: yes
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
