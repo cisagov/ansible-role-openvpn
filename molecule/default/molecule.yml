@@ -53,20 +53,22 @@ platforms:
     command: /lib/systemd/systemd
     pre_build_image: yes
   - name: fedora33_systemd
-    image: cisagov/docker-fedora33-ansible:latest
+    image: geerlingguy/docker-fedora33-ansible:latest
     privileged: yes
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: /lib/systemd/systemd
     pre_build_image: yes
+  # Xenial only has Python 3.5 and pip 8, and these antiquated
+  # versions cause issues.
+  # - name: ubuntu_xenial_systemd
+  #   image: geerlingguy/docker-ubuntu1604-ansible:latest
+  #   privileged: yes
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   command: /lib/systemd/systemd
+  #   pre_build_image: yes
   - name: ubuntu_bionic_systemd
-    image: geerlingguy/docker-ubuntu1604-ansible:latest
-    privileged: yes
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: /lib/systemd/systemd
-    pre_build_image: yes
-  - name: ubuntu_xenial_systemd
     image: geerlingguy/docker-ubuntu1804-ansible:latest
     privileged: yes
     volumes:
