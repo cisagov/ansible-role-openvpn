@@ -1,6 +1,4 @@
 ---
-# vars file for Ubuntu 16.04
-
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl

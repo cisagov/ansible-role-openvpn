@@ -1,6 +1,4 @@
 ---
-# tasks file for installing common name verification script
-
 - name: Install required system packages for common name verification script
   package:
     name: "{{ verify_cn_package_names }}"

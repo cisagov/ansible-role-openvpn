@@ -1,6 +1,4 @@
 ---
-# tasks file for openvpn
-
 - name: Load var file based on the OS type
   include_vars: "{{ lookup('first_found', params) }}"
   vars:

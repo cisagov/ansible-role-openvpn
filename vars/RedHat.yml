@@ -1,6 +1,4 @@
 ---
-# vars file for RedHat
-
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
