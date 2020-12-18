@@ -2,6 +2,9 @@
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
+  # Missing in the geerlingguy/docker-ubuntu1804-ansible:latest Docker
+  # image
+  - netbase
   - openvpn
   # Needed for the scripts created by cloud-init
   - python3-boto3
@@ -23,7 +26,7 @@ iptables_persistence_service_name: netfilter-persistent
 # The packages to install to support the common name verification
 # script
 verify_cn_package_names:
-  # Ubuntu is missing some development tools
+  # Ubuntu is missing some necessary development tools
   - build-essential
   - libkrb5-dev
 
