@@ -23,7 +23,7 @@ fetch(){
   if [[ $url =~ .cer$ ]]; then
     # Download the certificate and massage into correct format.
     curl --insecure --silent "${url}" --output "${source_file}"
-    # .cer files contain both PEM and DER formatted certificates.
+    # .cer files can contain either PEM or DER formatted certificates.
     mime_type=$(file --mime-type --brief "${source_file}")
     if [[ $mime_type == "application/octet-stream" ]]; then
       # Convert certificate from DER format to PEM.
