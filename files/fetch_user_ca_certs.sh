@@ -30,7 +30,7 @@ fetch(){
       openssl x509 -inform der -in "${source_file}" -out cert-a
     else
       # Certificate is already in PEM format.
-      ln "${source_file}" cert-a
+      cp "${source_file}" cert-a
     fi
   elif [[ $url =~ .p7b$ ]]; then
     # Download the certificate bundle and massage into correct format.
