@@ -2,6 +2,7 @@
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
+  - file
   - openvpn
   # Needed for the scripts created by cloud-init
   - python3-boto3

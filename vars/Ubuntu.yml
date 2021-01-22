@@ -2,6 +2,7 @@
 # The packages to install for OpenVPN
 openvpn_package_names:
   - curl
+  - file
   # Missing in the geerlingguy/docker-ubuntu1804-ansible:latest Docker
   # image
   - netbase
