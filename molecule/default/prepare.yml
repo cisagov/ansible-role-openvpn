@@ -13,13 +13,13 @@
   hosts: all
   tasks:
     - name: Group hosts by OS distribution
-      group_by:
+      ansible.builtin.group_by:
         key: os_{{ ansible_distribution }}
 - name: Wait for systemd to complete initialization (Fedora)
   hosts: os_Fedora
   tasks:
     - name: Wait for systemd to complete initialization # noqa 303
-      command: systemctl is-system-running
+      ansible.builtin.command: systemctl is-system-running
       register: systemctl_status
       until: "'running' in systemctl_status.stdout"
       retries: 30
@@ -27,10 +27,10 @@
       when: ansible_service_mgr == 'systemd'
 
 - name: Import upgrade playbook
-  import_playbook: upgrade.yml
+  ansible.builtin.import_playbook: upgrade.yml
 
 - name: Import python playbook
-  import_playbook: python.yml
+  ansible.builtin.import_playbook: python.yml
 
 # Some of our Debian Docker images (9 and 10) are missing netbase,
 # which provides /etc/services.  This is the file that ufw uses to map
@@ -39,6 +39,6 @@
   hosts: os_Debian
   tasks:
     - name: Install netbase (Debian)
-      package:
+      ansible.builtin.package:
         name:
           - netbase

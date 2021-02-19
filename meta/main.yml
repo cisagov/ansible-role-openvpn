@@ -31,9 +31,6 @@ galaxy_info:
         - 33
     - name: Ubuntu
       versions:
-        # Xenial only has Python 3.5 and pip 8, and these antiquated
-        # versions cause issues.
-        # - xenial
         - bionic
         - focal
   role_name: openvpn
