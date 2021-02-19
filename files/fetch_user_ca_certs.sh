@@ -9,11 +9,11 @@ set -o pipefail
 # with a name based upon its x509 subject and expiration date.
 
 URLS=(
-# Department of Energy
-"https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/EntrustRoot_to_EntrustSSP_2018_08_13.cer"
-"https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/FedRootCA2019.cer"
-# Department of Homeland Security
-"https://pki.treas.gov/dhsca_fullpath.p7b"
+  # Department of Energy
+  "https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/EntrustRoot_to_EntrustSSP_2018_08_13.cer"
+  "https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/FedRootCA2019.cer"
+  # Department of Homeland Security
+  "https://pki.treas.gov/dhsca_fullpath.p7b"
 )
 
 fetch(){
@@ -35,7 +35,7 @@ fetch(){
   elif [[ $url =~ .p7b$ ]]; then
     # Download the certificate bundle and massage into correct format.
     curl --insecure --silent "${url}" | \
-    openssl pkcs7 -print_certs -inform der -out "${source_file}"
+      openssl pkcs7 -print_certs -inform der -out "${source_file}"
 
     # Split chain of certificates into individual files.
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -66,7 +66,7 @@ mkdir -p certs && cd certs
 
 # Loop through CA URLs.
 for url in "${URLS[@]}"; do
-   fetch "$url"
+  fetch "$url"
 done
 
 # Calculate hashes and create symlinks for OpenSSL.
