@@ -50,8 +50,8 @@ None.
 
 ## Dependencies ##
 
-* [cisagov/ansible-role-pip](https://github.com/cisagov/ansible-role-pip)
-* [cisagov/ansible-role-ufw](https://github.com/cisagov/ansible-role-ufw)
+- [cisagov/ansible-role-pip](https://github.com/cisagov/ansible-role-pip)
+- [cisagov/ansible-role-ufw](https://github.com/cisagov/ansible-role-ufw)
 
 ## Example Playbook ##
 
