@@ -16,7 +16,7 @@ URLS=(
   "https://pki.treas.gov/dhsca_fullpath.p7b"
 )
 
-fetch(){
+fetch() {
   source_file=$(mktemp)
   url="$*"
 
@@ -34,8 +34,8 @@ fetch(){
     fi
   elif [[ $url =~ .p7b$ ]]; then
     # Download the certificate bundle and massage into correct format.
-    curl --insecure --silent "${url}" | \
-      openssl pkcs7 -print_certs -inform der -out "${source_file}"
+    curl --insecure --silent "${url}" \
+      | openssl pkcs7 -print_certs -inform der -out "${source_file}"
 
     # Split chain of certificates into individual files.
     if [[ "$OSTYPE" == "darwin"* ]]; then
