@@ -35,7 +35,7 @@ fetch() {
       # Certificate is already in PEM format.
       cp "${source_file}" cert-a
     fi
-  elif [[ $url =~ .p7b$ ]]; then
+  elif [[ $url =~ .p7[bc]$ ]]; then
     # Download the certificate bundle and massage into correct format.
     curl --insecure --silent "${url}" \
       | openssl pkcs7 -print_certs -inform der -out "${source_file}"
