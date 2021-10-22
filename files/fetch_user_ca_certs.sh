@@ -12,6 +12,9 @@ URLS=(
   # Department of Energy
   "https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/EntrustRoot_to_EntrustSSP_2018_08_13.cer"
   "https://enrollwebfed.managed.entrust.com/fssp/cda-docs/certs/FedRootCA2019.cer"
+  # Support older DOE PIVs (issued prior to Aug. 2019)
+  "http://rootweb.managed.entrust.com/AIA/CertsIssuedToEMSRootCA.p7c"
+  "http://sspweb.managed.entrust.com/AIA/CertsIssuedToEMSSSPCA.p7c"
   # Department of Homeland Security
   "https://pki.treas.gov/dhsca_fullpath.p7b"
 )
