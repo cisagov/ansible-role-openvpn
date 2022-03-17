@@ -27,7 +27,7 @@ iptables_persistence_service_name: iptables
 # The packages to install to support the common name verification
 # script
 verify_cn_package_names:
-  # Fedora 32 does not have gcc installed by default
+  # Fedora 34 and 35 do not have gcc installed by default
   - "@development-tools"
   - krb5-devel
   # Fedora 35 does not have this package installed by default
