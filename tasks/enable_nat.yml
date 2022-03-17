@@ -1,6 +1,6 @@
 ---
 - name: Enable NAT sysctl value for IPv4 NAT
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ufw/sysctl.conf
     regexp: ^#net/ipv4/ip_forward=1
     state: present

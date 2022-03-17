@@ -1,22 +1,22 @@
 ---
 - name: Install required system packages for common name verification script
-  package:
+  ansible.builtin.package:
     name: "{{ verify_cn_package_names }}"
 
 - name: Install required pip packages for common name verification script
-  pip:
+  ansible.builtin.pip:
     executable: pip3
     name: "{{ verify_cn_pip_package_names }}"
 
 - name: Install common name verification script
-  copy:
+  ansible.builtin.copy:
     src: verify-cn.py
     owner: root
     mode: 0700
     dest: /etc/openvpn/server/
 
 - name: Install common name verification script configuration
-  copy:
+  ansible.builtin.copy:
     src: verify-cn.yml
     owner: root
     mode: 0400
