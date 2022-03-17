@@ -30,6 +30,8 @@ verify_cn_package_names:
   # Fedora 32 does not have gcc installed by default
   - "@development-tools"
   - krb5-devel
+  # Fedora 35 does not have this package installed by default
+  - redhat-rpm-config
 
 # The pip packages to install to support the common name verification
 # script
