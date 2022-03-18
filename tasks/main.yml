@@ -1,6 +1,6 @@
 ---
 - name: Load var file based on the OS type
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -11,28 +11,28 @@
         - "{{ role_path }}/vars"
 
 - name: Install OpenVPN packages
-  package:
+  ansible.builtin.package:
     name: "{{ openvpn_package_names }}"
 
 - name: Copy OpenVPN config from files
-  copy:
+  ansible.builtin.copy:
     src: primary.conf
     owner: root
     mode: 0600
     dest: /etc/openvpn/server/
 
 - name: Load tasks for installing common name verification script
-  include: install_verify_cn.yml
+  ansible.builtin.include_tasks: install_verify_cn.yml
 
 - name: Install certificate fetch script
-  copy:
+  ansible.builtin.copy:
     src: fetch_user_ca_certs.sh
     owner: root
     mode: 0700
     dest: /etc/openvpn/server/
 
 - name: Fetch DHS CA certificates using fetch_user_ca_certs.sh
-  command: /etc/openvpn/server/fetch_user_ca_certs.sh
+  ansible.builtin.command: /etc/openvpn/server/fetch_user_ca_certs.sh
   args:
     chdir: /etc/openvpn/server
     creates: /etc/openvpn/server/certs
@@ -40,36 +40,36 @@
 # Unless you do this, systemd can sometimes get confused when you try
 # to start a service you just installed
 - name: Systemd daemon-reload
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
   when:
     - ansible_service_mgr == "systemd"
 
 - name: Enable OpenVPN
-  service:
+  ansible.builtin.service:
     name: "{{ openvpn_service_name }}@primary"
     enabled: yes
     state: stopped
 
 - name: Configure OpenVPN service to run after multi-user and cloud-final
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /lib/systemd/system/{{ openvpn_service_name }}@.service
     regexp: ^After=
     state: present
     line: After=network.target multi-user.target cloud-final.service
 
 - name: Disable OpenVPN private tmp directory to allow certificate file sharing
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /lib/systemd/system/{{ openvpn_service_name }}@.service
     regexp: ^PrivateTmp=
     state: present
     line: PrivateTmp=false
 
 - name: Load tasks file for enabling NAT
-  include: enable_nat.yml
+  ansible.builtin.include_tasks: enable_nat.yml
 
 - name: Configure ufw to allow OpenVPN via UDP
-  ufw:
+  ansible.builtin.ufw:
     comment: Allow OpenVPN via UDP
     proto: udp
     rule: allow

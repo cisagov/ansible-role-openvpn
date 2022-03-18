@@ -7,8 +7,8 @@
 Ansible role for installing and configuring an
 [OpenVPN](https://openvpn.net) server.  This role also enables IPv4
 NAT via [ufw](https://wiki.ubuntu.com/UncomplicatedFirewall), although
-_it does not set the default policy for routed packets in UFW, nor
-does it create any rules to allow them through._  This is because
+*it does not set the default policy for routed packets in UFW, nor
+does it create any rules to allow them through.*  This is because
 there is no way to know a priori whether the user wants to deny all
 routed packets and create rules to allow them through or just default
 allow all routed packets; therefore, you must manage this part of the
