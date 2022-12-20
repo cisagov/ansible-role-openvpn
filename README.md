@@ -1,8 +1,7 @@
 # ansible-role-openvpn #
 
 [![GitHub Build Status](https://github.com/cisagov/ansible-role-openvpn/workflows/build/badge.svg)](https://github.com/cisagov/ansible-role-openvpn/actions)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/ansible-role-openvpn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-openvpn/context:python)
+[![CodeQL](https://github.com/cisagov/ansible-role-openvpn/workflows/CodeQL/badge.svg)](https://github.com/cisagov/ansible-role-openvpn/actions/workflows/codeql-analysis.yml)
 
 Ansible role for installing and configuring an
 [OpenVPN](https://openvpn.net) server.  This role also enables IPv4
@@ -58,6 +57,7 @@ None.
 ## Dependencies ##
 
 - [cisagov/ansible-role-pip](https://github.com/cisagov/ansible-role-pip)
+- [cisagov/ansible-role-python](https://github.com/cisagov/ansible-role-python)
 - [cisagov/ansible-role-ufw](https://github.com/cisagov/ansible-role-ufw)
 
 ## Example Playbook ##
@@ -68,8 +68,10 @@ Here's how to use it in a playbook:
 - hosts: all
   become: yes
   become_method: sudo
-  roles:
-    - openvpn
+  tasks:
+    - name: Install and configure OpenVPN
+      ansible.builtin.include_role:
+        name: openvpn
 ```
 
 ## Contributing ##

@@ -29,9 +29,6 @@
 - name: Import upgrade playbook
   ansible.builtin.import_playbook: upgrade.yml
 
-- name: Import python playbook
-  ansible.builtin.import_playbook: python.yml
-
 # Some of our Debian Docker images (9 and 10) are missing netbase,
 # which provides /etc/services.  This is the file that ufw uses to map
 # port names (e.g. "openvpn") to port numbers, and so we require it.
