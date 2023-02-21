@@ -1,8 +1,15 @@
 ---
+dependencies:
+  - src: https://github.com/cisagov/ansible-role-pip
+    name: pip
+  - src: https://github.com/cisagov/ansible-role-python
+    name: python
+  - src: https://github.com/cisagov/ansible-role-ufw
+    name: ufw
 galaxy_info:
   author: Mark Feldhousen
-  description: Install and configure OpenVPN
   company: CISA Cyber Assessments
+  description: Install and configure OpenVPN
   galaxy_tags:
     - openvpn
   license: CC0
@@ -29,7 +36,6 @@ galaxy_info:
         - bookworm
     - name: Fedora
       versions:
-        - "35"
         - "36"
         - "37"
     - name: Ubuntu
@@ -38,11 +44,3 @@ galaxy_info:
         - focal
         - jammy
   role_name: openvpn
-
-dependencies:
-  - src: https://github.com/cisagov/ansible-role-pip
-    name: pip
-  - src: https://github.com/cisagov/ansible-role-python
-    name: python
-  - src: https://github.com/cisagov/ansible-role-ufw
-    name: ufw
