@@ -6,6 +6,12 @@
 - name: Install required pip packages for common name verification script
   ansible.builtin.pip:
     executable: pip3
+    # The extra argument is necessary on Debian 12, which correctly
+    # recognizes that the local Python is externally managed
+    # (i.e. managed via the system package manager and not by pip).
+    # The extra argument is understood by pip on Debian and Kali
+    # systems, but not others.
+    extra_args: "{{ ansible_distribution is in ['Debian', 'Kali'] | ternary('--break-system-packages', omit) }}"
     name: "{{ verify_cn_pip_package_names }}"
 
 - name: Install common name verification script
