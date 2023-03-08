@@ -27,24 +27,6 @@ platforms:
   #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
-    image: geerlingguy/docker-debian9-ansible:latest
-    name: debian9-systemd
-    platform: amd64
-    pre_build_image: yes
-    privileged: yes
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  - cgroupns_mode: host
-    command: /lib/systemd/systemd
-    image: geerlingguy/docker-debian10-ansible:latest
-    name: debian10-systemd
-    platform: amd64
-    pre_build_image: yes
-    privileged: yes
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  - cgroupns_mode: host
-    command: /lib/systemd/systemd
     image: geerlingguy/docker-debian11-ansible:latest
     name: debian11-systemd
     platform: amd64
@@ -83,15 +65,6 @@ platforms:
     command: /lib/systemd/systemd
     image: geerlingguy/docker-fedora37-ansible:latest
     name: fedora37-systemd
-    platform: amd64
-    pre_build_image: yes
-    privileged: yes
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  - cgroupns_mode: host
-    command: /lib/systemd/systemd
-    image: geerlingguy/docker-ubuntu1804-ansible:latest
-    name: ubuntu-18-systemd
     platform: amd64
     pre_build_image: yes
     privileged: yes

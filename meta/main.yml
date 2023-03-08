@@ -29,8 +29,6 @@ galaxy_info:
     #     - any
     - name: Debian
       versions:
-        - stretch
-        - buster
         - bullseye
         # Kali linux isn't an option here, but it is based on
         # Debian Testing:
@@ -42,7 +40,6 @@ galaxy_info:
         - "37"
     - name: Ubuntu
       versions:
-        - bionic
         - focal
         - jammy
   role_name: openvpn
