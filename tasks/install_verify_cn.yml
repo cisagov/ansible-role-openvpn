@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ verify_cn_package_names }}"
 
+# This task can be dropped altogether if #71 is resolved.
 - name: Install required pip packages for common name verification script
   ansible.builtin.pip:
     executable: pip3
