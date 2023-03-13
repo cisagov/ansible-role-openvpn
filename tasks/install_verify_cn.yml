@@ -10,9 +10,9 @@
     # The extra argument is necessary on Debian 12, which correctly
     # recognizes that the local Python is externally managed
     # (i.e. managed via the system package manager and not by pip).
-    # The extra argument is understood by pip on Debian and Kali
+    # The extra argument is understood by pip on Debian 12 and Kali
     # systems, but not others.
-    extra_args: "{{ ansible_distribution is in ['Debian', 'Kali'] | ternary('--break-system-packages', omit) }}"
+    extra_args: "{{ (ansible_distribution == 'Kali' or (ansible_distribution == 'Debian' and ansible_distribution_release == 'bookworm')) | ternary('--break-system-packages', omit) }}"
     name: "{{ verify_cn_pip_package_names }}"
 
 - name: Install common name verification script
