@@ -30,14 +30,14 @@ verify_cn_package_names:
   # Ubuntu is missing some necessary development tools
   - build-essential
   - libkrb5-dev
-  - python3-ipalib
-  - python3-requests-kerberos
 
 # The pip packages to install to support the common name verification
 # script
 #
-# Ideally we should get rid of this dependency, so we are no longer
+# Ideally we should get rid of these dependencies, so we are no longer
 # installing Python packages via pip vice the system package manager.
 # See #71 for more details.
 verify_cn_pip_package_names:
+  - python_freeipa
+  - requests_gssapi
   - srvlookup
