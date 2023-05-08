@@ -3,9 +3,6 @@
 openvpn_package_names:
   - curl
   - file
-  # Missing in the geerlingguy/docker-ubuntu1804-ansible:latest Docker
-  # image
-  - netbase
   - openvpn
   # Needed for the scripts created by cloud-init
   - python3-boto3
