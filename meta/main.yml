@@ -24,20 +24,21 @@ galaxy_info:
   namespace: cisagov
   platforms:
     # Amazon Linux 2 does not appear to provide OpenVPN
-    # - name: Amazon Linux 2
+    # - name: Amazon Linux 2023
     #   versions:
     #     - any
     - name: Debian
       versions:
+        - buster
         - bullseye
-        # Kali linux isn't an option here, but it is based on
-        # Debian Testing:
-        # https://www.kali.org/docs/policy/kali-linux-relationship-with-debian
         - bookworm
     - name: Fedora
       versions:
         - "36"
         - "37"
+    - name: Kali
+      versions:
+        - "2023"
     - name: Ubuntu
       versions:
         - focal
