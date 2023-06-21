@@ -9,11 +9,6 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
-  flake8
 platforms:
   # Amazon Linux 2 does not appear to provide OpenVPN
   # - cgroupns_mode: host
@@ -63,8 +58,8 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
-    image: geerlingguy/docker-fedora36-ansible:latest
-    name: fedora36-systemd
+    image: geerlingguy/docker-fedora37-ansible:latest
+    name: fedora37-systemd
     platform: amd64
     pre_build_image: yes
     privileged: yes
@@ -72,8 +67,8 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
-    image: geerlingguy/docker-fedora37-ansible:latest
-    name: fedora37-systemd
+    image: geerlingguy/docker-fedora38-ansible:latest
+    name: fedora38-systemd
     platform: amd64
     pre_build_image: yes
     privileged: yes
