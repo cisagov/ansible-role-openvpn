@@ -48,7 +48,7 @@
 - name: Enable OpenVPN
   ansible.builtin.service:
     name: "{{ openvpn_service_name }}@primary"
-    enabled: yes
+    enabled: true
     state: stopped
 
 - name: Configure OpenVPN service to run after multi-user and cloud-final
