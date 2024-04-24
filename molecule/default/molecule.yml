@@ -1,1 +1,125 @@
-molecule-with-systemd.yml
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  # Amazon Linux 2 does not appear to provide OpenVPN
+  # - cgroupns_mode: host
+  #   command: /lib/systemd/systemd
+  #   image: docker.io/geerlingguy/docker-amazonlinux2023-ansible:latest
+  #   name: amazonlinux2023-systemd
+  #   platform: amd64
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-debian10-ansible:latest
+    name: debian10-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-debian11-ansible:latest
+    name: debian11-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-debian12-ansible:latest
+    name: debian12-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/cisagov/docker-debian13-ansible:latest
+    name: debian13-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/cisagov/docker-kali-ansible:latest
+    name: kali-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  # For reasons I haven't been able to discern, the Fedora molecule
+  # tests work fine locally but fail in GitHub Actions due to being
+  # unable to perform some iptables operations.  I would think this
+  # was due to some kernel module not being loaded in the underlying
+  # host instance, except that other platforms pass just fine in
+  # GitHub Actions.
+  #
+  # I've already spent too much time on this, and the role works just
+  # fine when building a Fedora AMI, so I will make the executive
+  # decision to remove Fedora support for now.  I created this issue
+  # to document the error:
+  # https://github.com/cisagov/ansible-role-ufw/issues/3
+  # - cgroupns_mode: host
+  #   command: /lib/systemd/systemd
+  #   image: docker.io/geerlingguy/docker-fedora38-ansible:latest
+  #   name: fedora38-systemd
+  #   platform: amd64
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  # - cgroupns_mode: host
+  #   command: /lib/systemd/systemd
+  #   image: docker.io/geerlingguy/docker-fedora39-ansible:latest
+  #   name: fedora39-systemd
+  #   platform: amd64
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  # For reasons I haven't been able to discern, the Ubuntu Focal
+  # molecule tests work fine locally but fail in GitHub Actions due to
+  # being unable to perform some iptables operations.  I would think
+  # this was due to some kernel module not being loaded in the
+  # underlying host instance, except that other platforms pass just
+  # fine in GitHub Actions.
+  #
+  # I've already spent too much time on this, and we don't require the
+  # Ubuntu support right now, so I will make the executive decision to
+  # remove Ubuntu Focal support for now.  I created this issue to
+  # document the error:
+  # https://github.com/cisagov/ansible-role-ufw/issues/3
+  # - cgroupns_mode: host
+  #   command: /lib/systemd/systemd
+  #   image: docker.io/geerlingguy/docker-ubuntu2004-ansible:latest
+  #   name: ubuntu-20-systemd
+  #   platform: amd64
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-ubuntu2204-ansible:latest
+    name: ubuntu-22-systemd
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+scenario:
+  name: default
+verifier:
+  name: testinfra

@@ -37,16 +37,41 @@ galaxy_info:
         - buster
         - bullseye
         - bookworm
-    - name: Fedora
-      versions:
-        - "37"
-        - "38"
+        - trixie
+    # For reasons I haven't been able to discern, the Fedora molecule
+    # tests work fine locally but fail in GitHub Actions due to being
+    # unable to perform some iptables operations.  I would think this
+    # was due to some kernel module not being loaded in the underlying
+    # host instance, except that other platforms pass just fine in
+    # GitHub Actions.
+    #
+    # I've already spent too much time on this, and the role works
+    # just fine when building a Fedora AMI, so I will make the
+    # executive decision to remove Fedora support for now.  I created
+    # this issue to document the error:
+    # https://github.com/cisagov/ansible-role-ufw/issues/3
+    # - name: Fedora
+    #   versions:
+    #     - "38"
+    #     - "39"
     - name: Kali
       versions:
         - "2023"
     - name: Ubuntu
       versions:
-        - focal
+        # For reasons I haven't been able to discern, the Ubuntu Focal
+        # molecule tests work fine locally but fail in GitHub Actions
+        # due to being unable to perform some iptables operations.  I
+        # would think this was due to some kernel module not being
+        # loaded in the underlying host instance, except that other
+        # platforms pass just fine in GitHub Actions.
+        #
+        # I've already spent too much time on this, and we don't
+        # require the Ubuntu support right now, so I will make the
+        # executive decision to remove Ubuntu Focal support for now.
+        # I created this issue to document the error:
+        # https://github.com/cisagov/ansible-role-ufw/issues/3
+        # - focal
         - jammy
   role_name: openvpn
   standalone: true
