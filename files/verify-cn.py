@@ -3,6 +3,7 @@
 
 
 # Standard Python Libraries
+import glob
 import logging
 import os
 from pathlib import Path
@@ -11,7 +12,11 @@ import sys
 from typing import Optional
 
 # Third-Party Libraries
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.x509 import load_pem_x509_certificate, ocsp
+from cryptography.x509.ocsp import OCSPResponseStatus
 from python_freeipa import ClientMeta
+import requests
 import yaml
 
 # Return code constants
@@ -21,8 +26,24 @@ DENY_USER_CONNECTION_ATTEMPT = 1
 
 # Configuration constants
 CONFIG_FILE = "verify-cn.yml"
+ISSUER_CERTS_PATH = "/etc/openvpn/server/certs/DHS_CA4_*.pem"
 KEYTAB_FILE = "/etc/krb5.keytab"
+OCSP_URL = "http://ocsp.dimc.dhs.gov"
 PEER_CERT_VARIABLE = "peer_cert"
+CERT_PATH = "/etc/openvpn/server/peer_cert.pem"
+
+
+def find_issuer_certificate():
+    """Search for issuer certificates matching the pattern."""
+    issuer_cert_files = glob.glob(ISSUER_CERTS_PATH)
+    if not issuer_cert_files:
+        raise FileNotFoundError("No issuer certificates found.")
+
+    # Optionally, select the most recent certificate based on naming convention
+    issuer_cert_files.sort()
+    return issuer_cert_files[
+        -1
+    ]  # Return the last (most recent) file in the sorted list
 
 
 def load_client_certificate() -> Optional[str]:
@@ -49,9 +70,76 @@ def load_client_certificate() -> Optional[str]:
 
     with client_certificate_path.open() as f:
         cert_data: str = f.read()
-
     # Chop off header, footer, and remove new lines
     return "".join(cert_data.split("\n")[1:-2])
+
+
+def check_ocsp(issuer_path, cert_path, ocsp_url) -> bool:
+    """Send an OCSP request to check the revocation status."""
+    logging.debug("Load the issuer cert")
+
+    # Load the issuer certificate
+    with open(issuer_path, "rb") as issuer_file:
+        issuer_cert_data = issuer_file.read()
+    issuer = load_pem_x509_certificate(issuer_cert_data)
+
+    logging.debug("Load the cert to check")
+
+    # Load the certificate to check
+    with open(cert_path, "rb") as cert_file:
+        cert_data = cert_file.read()
+    cert = load_pem_x509_certificate(cert_data)
+
+    logging.debug("Create an OCSP request")
+
+    # Create an OCSP request
+    builder = ocsp.OCSPRequestBuilder()
+    builder = builder.add_certificate(cert, issuer, hashes.SHA256())
+    ocsp_req = builder.build()
+
+    logging.debug("Send the OCSP request")
+
+    # Send the OCSP request
+    headers = {"Content-Type": "application/ocsp-request"}
+    response = requests.post(
+        ocsp_url,
+        data=ocsp_req.public_bytes(serialization.Encoding.DER),
+        headers=headers,
+    )
+
+    logging.debug("Parse the OCSP response")
+
+    # Parse the OCSP response
+    if response.status_code == 200:
+        logging.debug("load der OCSP response")
+        ocsp_resp = ocsp.load_der_ocsp_response(response.content)
+        logging.debug("after load der OCSP response")
+        if ocsp_resp.response_status == OCSPResponseStatus.SUCCESSFUL:
+            logging.debug(
+                "after if ocsp_resp.response_status == OCSPResponseStatus.Successful"
+            )
+            for single_response in ocsp_resp.responses:
+                if single_response.serial_number == cert.serial_number:
+                    logging.debug("OCSP Response Status: %s", ocsp_resp.response_status)
+                    logging.debug(
+                        "Certificate Status: %s", single_response.certificate_status
+                    )
+                    logging.debug("This Update: %s", single_response.this_update)
+                    logging.debug("Next Update: %s", single_response.next_update)
+
+                    # Check if the certificate status is not GOOD
+                    if single_response.certificate_status != ocsp.OCSPCertStatus.GOOD:
+                        return False
+                    return True  # Certificate is GOOD
+            return False  # Serial number not found in responses
+        else:
+            logging.debug("OCSP Response Status: %s", ocsp_resp.response_status)
+            return False
+    else:
+        logging.debug(
+            "Error contacting OCSP server, status code: %s", response.status_code
+        )
+        return False
 
 
 def kinit() -> None:
@@ -165,6 +253,25 @@ def main() -> int:
 
     # We are evaluating the user's certificate (depth 0)
     logging.debug("x509cn = %s", x509cn)
+
+    # Load client certificate path
+    client_certificate_path = CERT_PATH
+
+    if not client_certificate_path:
+        # Without a certificate we cannot process any further
+        return DENY_USER_CONNECTION_ATTEMPT
+
+    try:
+        issuer_cert_path = find_issuer_certificate()
+        logging.debug("found issuer: %s", issuer_cert_path)
+        cert_path = client_certificate_path
+        logging.debug("client cert: %s", client_certificate_path)
+        ocsp_url = OCSP_URL
+        logging.debug("ocsp_url: %s", ocsp_url)
+        if not check_ocsp(issuer_cert_path, cert_path, ocsp_url):
+            return DENY_USER_CONNECTION_ATTEMPT
+    except Exception as e:
+        logging.debug("Error: %s", e)
 
     # Load client certificate
     client_certificate = load_client_certificate()
