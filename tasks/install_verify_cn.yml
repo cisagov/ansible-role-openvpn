@@ -16,14 +16,14 @@
 
 - name: Install common name verification script
   ansible.builtin.copy:
-    src: verify-cn.py
-    owner: root
-    mode: 0700
     dest: /etc/openvpn/server/
+    mode: 0700
+    owner: root
+    src: verify-cn.py
 
 - name: Install common name verification script configuration
   ansible.builtin.copy:
-    src: verify-cn.yml
-    owner: root
-    mode: 0400
     dest: /etc/openvpn/server/
+    mode: 0400
+    owner: root
+    src: verify-cn.yml
