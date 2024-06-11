@@ -40,8 +40,8 @@ These steps can be performed via cloud-init, as is done
 [here](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
 
 > [!NOTE]
-> We cannot currently test *any* ARM64 platforms under `qemu` because
-> [`qemu` cannot currently support
+> We cannot currently test *any* ARM64 platforms under QEMU because
+> [QEMU cannot currently support
 > `iptables`](https://github.com/multiarch/qemu-user-static/issues/191).
 
 ## Requirements ##
