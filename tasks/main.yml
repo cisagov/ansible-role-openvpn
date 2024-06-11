@@ -37,16 +37,11 @@
     chdir: /etc/openvpn/server
     creates: /etc/openvpn/server/certs
 
-# Unless you do this, systemd can sometimes get confused when you try
-# to start a service you just installed
-- name: Systemd daemon-reload
-  ansible.builtin.systemd:
-    daemon_reload: true
-  when:
-    - ansible_service_mgr == "systemd"
-
 - name: Enable OpenVPN
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
+    # Unless you do this, systemd can sometimes get confused when you
+    # try to start a service you just installed.
+    daemon_reload: true
     enabled: true
     name: "{{ openvpn_service_name }}@primary"
     state: stopped
