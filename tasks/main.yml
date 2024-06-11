@@ -37,15 +37,6 @@
     chdir: /etc/openvpn/server
     creates: /etc/openvpn/server/certs
 
-- name: Enable OpenVPN
-  ansible.builtin.systemd_service:
-    # Unless you do this, systemd can sometimes get confused when you
-    # try to start a service you just installed.
-    daemon_reload: true
-    enabled: true
-    name: "{{ openvpn_service_name }}@primary"
-    state: stopped
-
 - name: Configure OpenVPN service to run after multi-user and cloud-final
   ansible.builtin.lineinfile:
     dest: /lib/systemd/system/{{ openvpn_service_name }}@.service
@@ -59,6 +50,15 @@
     line: PrivateTmp=false
     regexp: ^PrivateTmp=
     state: present
+
+- name: Enable OpenVPN
+  ansible.builtin.systemd_service:
+    # Unless you do this, systemd can sometimes get confused when you
+    # try to start a service you just installed.
+    daemon_reload: true
+    enabled: true
+    name: "{{ openvpn_service_name }}@primary"
+    state: stopped
 
 - name: Load tasks file for enabling NAT
   ansible.builtin.include_tasks: enable_nat.yml
