@@ -17,7 +17,7 @@
 - name: Copy OpenVPN config from files
   ansible.builtin.copy:
     dest: /etc/openvpn/server/
-    mode: 0600
+    mode: u=rw,g=,o=
     owner: root
     src: primary.conf
 
@@ -27,7 +27,7 @@
 - name: Install certificate fetch script
   ansible.builtin.copy:
     dest: /etc/openvpn/server/
-    mode: 0700
+    mode: u=rwx,g=,o=
     owner: root
     src: fetch_user_ca_certs.sh
 
@@ -42,7 +42,7 @@
     actually exists
   ansible.builtin.file:
     group: root
-    mode: 0755
+    mode: u=rwx,g=rx,o=rx
     owner: root
     path: /etc/systemd/system/{{ openvpn_service_name }}@.service.d
     state: directory
@@ -50,7 +50,7 @@
 - name: Configure OpenVPN service to run after multi-user and cloud-final
   community.general.ini_file:
     group: root
-    mode: 0644
+    mode: u=rw,g=r,o=r
     # This is just to maintain the look and feel of the
     # /usr/lib/systemd/system/openvpn-server@.service file as provided
     # by the package manager.
@@ -66,7 +66,7 @@
 - name: Disable OpenVPN private tmp directory to allow certificate file sharing
   community.general.ini_file:
     group: root
-    mode: 0644
+    mode: u=rw,g=r,o=r
     # This is just to maintain the look and feel of the
     # /lib/systemd/system/openvpn-server@.service file as provided by
     # the package manager.
