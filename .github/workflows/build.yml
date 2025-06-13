@@ -214,10 +214,7 @@ jobs:
       matrix:
         architecture:
           - amd64
-          # We cannot currently test _any_ ARM64 platforms under QEMU
-          # because QEMU cannot currently support iptables:
-          # https://github.com/multiarch/qemu-user-static/issues/191
-          # - arm64
+          - arm64
         platform:
           # Amazon Linux 2 does not appear to provide OpenVPN
           # - amazonlinux2023-systemd
