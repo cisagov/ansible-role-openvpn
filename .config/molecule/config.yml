@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  # Amazon Linux 2 does not appear to provide OpenVPN
+  # Amazon Linux 2 does not appear to provide UFW.
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
   #   image: docker.io/geerlingguy/docker-amazonlinux2023-ansible:latest

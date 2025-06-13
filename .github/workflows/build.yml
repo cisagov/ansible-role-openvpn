@@ -216,7 +216,7 @@ jobs:
           - amd64
           - arm64
         platform:
-          # Amazon Linux 2 does not appear to provide OpenVPN
+          # Amazon Linux 2 does not appear to provide UFW.
           # - amazonlinux2023-systemd
           - debian10-systemd
           - debian11-systemd
