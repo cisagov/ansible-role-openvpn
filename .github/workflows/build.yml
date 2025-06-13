@@ -238,24 +238,9 @@ jobs:
           # the executive decision to remove Fedora support for now.
           # I created this issue to document the error:
           # https://github.com/cisagov/ansible-role-ufw/issues/3
-          # - fedora39-systemd
-          # - fedora40-systemd
           # - fedora41-systemd
+          # - fedora42-systemd
           - kali-systemd
-          # For reasons I haven't been able to discern, the Ubuntu
-          # Focal molecule tests work fine locally but fail in GitHub
-          # Actions due to being unable to perform some iptables
-          # operations.  I would think this was due to some kernel
-          # module not being loaded in the underlying host instance,
-          # except that other platforms pass just fine in GitHub
-          # Actions.
-          #
-          # I've already spent too much time on this, and we don't
-          # require the Ubuntu support right now, so I will make the
-          # executive decision to remove Ubuntu Focal support for now.
-          # I created this issue to document the error:
-          # https://github.com/cisagov/ansible-role-ufw/issues/3
-          # - ubuntu-20-systemd
           - ubuntu-22-systemd
           - ubuntu-24-systemd
         scenario:
