@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  # Amazon Linux 2 does not appear to provide OpenVPN
+  # Amazon Linux 2 does not appear to provide UFW.
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
   #   image: docker.io/geerlingguy/docker-amazonlinux2023-ansible:latest
@@ -127,42 +127,6 @@ platforms:
   # https://github.com/cisagov/ansible-role-ufw/issues/3
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora39-ansible:latest
-  #   name: fedora39-systemd-amd64
-  #   platform: amd64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora39-ansible:latest
-  #   name: fedora39-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora40-ansible:latest
-  #   name: fedora40-systemd-amd64
-  #   platform: amd64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora40-ansible:latest
-  #   name: fedora40-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
   #   image: docker.io/geerlingguy/docker-fedora41-ansible:latest
   #   name: fedora41-systemd-amd64
   #   platform: amd64
@@ -179,22 +143,10 @@ platforms:
   #   privileged: true
   #   volumes:
   #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # For reasons I haven't been able to discern, the Ubuntu Focal
-  # molecule tests work fine locally but fail in GitHub Actions due to
-  # being unable to perform some iptables operations.  I would think
-  # this was due to some kernel module not being loaded in the
-  # underlying host instance, except that other platforms pass just
-  # fine in GitHub Actions.
-  #
-  # I've already spent too much time on this, and we don't require the
-  # Ubuntu support right now, so I will make the executive decision to
-  # remove Ubuntu Focal support for now.  I created this issue to
-  # document the error:
-  # https://github.com/cisagov/ansible-role-ufw/issues/3
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-ubuntu2004-ansible:latest
-  #   name: ubuntu-20-systemd-amd64
+  #   image: docker.io/geerlingguy/docker-fedora42-ansible:latest
+  #   name: fedora42-systemd-amd64
   #   platform: amd64
   #   pre_build_image: true
   #   privileged: true
@@ -202,8 +154,8 @@ platforms:
   #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-ubuntu2004-ansible:latest
-  #   name: ubuntu-20-systemd-arm64
+  #   image: docker.io/geerlingguy/docker-fedora42-ansible:latest
+  #   name: fedora42-systemd-arm64
   #   platform: arm64
   #   pre_build_image: true
   #   privileged: true

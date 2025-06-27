@@ -28,7 +28,7 @@ galaxy_info:
   min_ansible_version: "2.10"
   namespace: cisagov
   platforms:
-    # Amazon Linux 2 does not appear to provide OpenVPN
+    # Amazon Linux 2 does not appear to provide UFW.
     # - name: Amazon Linux
     #   versions:
     #     - "2023"
@@ -52,27 +52,13 @@ galaxy_info:
     # https://github.com/cisagov/ansible-role-ufw/issues/3
     # - name: Fedora
     #   versions:
-    #     - "39"
-    #     - "40"
     #     - "41"
+    #     - "42"
     - name: Kali
       versions:
         - "2023"
     - name: Ubuntu
       versions:
-        # For reasons I haven't been able to discern, the Ubuntu Focal
-        # molecule tests work fine locally but fail in GitHub Actions
-        # due to being unable to perform some iptables operations.  I
-        # would think this was due to some kernel module not being
-        # loaded in the underlying host instance, except that other
-        # platforms pass just fine in GitHub Actions.
-        #
-        # I've already spent too much time on this, and we don't
-        # require the Ubuntu support right now, so I will make the
-        # executive decision to remove Ubuntu Focal support for now.
-        # I created this issue to document the error:
-        # https://github.com/cisagov/ansible-role-ufw/issues/3
-        # - focal
         - jammy
         - noble
   role_name: openvpn
