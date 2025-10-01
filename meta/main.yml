@@ -38,6 +38,7 @@ galaxy_info:
         - bullseye
         - bookworm
         - trixie
+        - forky
     # For reasons I haven't been able to discern, the Fedora molecule
     # tests work fine locally but fail in GitHub Actions due to being
     # unable to perform some iptables operations.  I would think this

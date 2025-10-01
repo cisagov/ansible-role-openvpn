@@ -36,8 +36,8 @@ Finally, one must activate the `nat` table rules:
 ufw disable && ufw enable
 ```
 
-These steps can be performed via cloud-init, as is done
-[here](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
+These steps can be performed via cloud-init, as is done [in
+cisagov/openvpn-server-tf-module](https://github.com/cisagov/openvpn-server-tf-module/blob/develop/cloudinit/create-iptables-rule-for-nat.sh).
 
 > [!NOTE]
 > We cannot currently test *any* ARM64 platforms under QEMU because
