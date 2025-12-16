@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 import subprocess  # nosec
 import sys
-from typing import Optional
 
 # Third-Party Libraries
 from python_freeipa import ClientMeta
@@ -25,7 +24,7 @@ KEYTAB_FILE = "/etc/krb5.keytab"
 PEER_CERT_VARIABLE = "peer_cert"
 
 
-def load_client_certificate() -> Optional[str]:
+def load_client_certificate() -> str | None:
     """Read certificate data from file identified by environment variable."""
     # OpenVPN sends us the client's certificate though the peer_cert environment
     # variable.

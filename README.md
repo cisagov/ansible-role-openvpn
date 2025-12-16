@@ -1,6 +1,7 @@
 # ansible-role-openvpn #
 
 [![GitHub Build Status](https://github.com/cisagov/ansible-role-openvpn/workflows/build/badge.svg)](https://github.com/cisagov/ansible-role-openvpn/actions)
+[![License](https://img.shields.io/github/license/cisagov/ansible-role-openvpn)](https://spdx.org/licenses/)
 [![CodeQL](https://github.com/cisagov/ansible-role-openvpn/workflows/CodeQL/badge.svg)](https://github.com/cisagov/ansible-role-openvpn/actions/workflows/codeql-analysis.yml)
 
 Ansible role for installing and configuring an
