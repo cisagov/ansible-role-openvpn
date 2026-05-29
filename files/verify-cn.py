@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Verify if a user's certificate should be permitted access."""
 
-
 # Standard Python Libraries
 import logging
 import os
