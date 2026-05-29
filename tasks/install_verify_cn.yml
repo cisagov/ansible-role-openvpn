@@ -14,7 +14,7 @@
     extra_args: >-
       {{ (ansible_distribution == 'Kali'
       or (ansible_distribution in ['Debian', 'Ubuntu']
-      and ansible_distribution_release in ['bookworm', 'noble', 'trixie', 'forky']))
+      and ansible_distribution_release not in ['bullseye', 'buster', 'jammy']))
       | ternary('--break-system-packages', omit) }}
     name: "{{ verify_cn_pip_package_names }}"
 
