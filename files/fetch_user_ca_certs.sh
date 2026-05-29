@@ -74,4 +74,4 @@ done
 
 # Calculate hashes and create symlinks for OpenSSL.
 # Adding brew path so it works in development environments.
-PATH=$PATH:/usr/local/opt/openssl/bin c_rehash .
+PATH=$PATH:/usr/local/opt/openssl/bin openssl rehash .
