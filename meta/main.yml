@@ -62,5 +62,6 @@ galaxy_info:
       versions:
         - jammy
         - noble
+        - resolute
   role_name: openvpn
   standalone: true
