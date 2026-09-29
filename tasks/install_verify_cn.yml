@@ -1,4 +1,13 @@
 ---
+- name: >-
+    Install script to add necessary FreeIPA permissions for common
+    name verification script
+  ansible.builtin.copy:
+    dest: /usr/local/sbin/
+    mode: u=rwx,g=,o=
+    owner: root
+    src: 02_setup_certmap_permissions.sh
+
 - name: Install required system packages for common name verification script
   ansible.builtin.package:
     name: "{{ verify_cn_package_names }}"
