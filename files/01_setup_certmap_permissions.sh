@@ -33,19 +33,33 @@ fi
 # Create the necessary permissions to query against the certificate
 # mapping data stored in FreeIPA if they do not already exist.
 function create_and_assign_permissions_if_needed {
-  # Since the role may already be created and/or the privilege already
-  # assigned, an error code may be returned, so we need to temporarily
-  # turn off errexit for these commands.
-  set +o errexit
-  ipa role-add "Cert Mapping Automation" --desc="Allows hosts to match client certificates"
-  ipa role-add-privilege "Cert Mapping Automation" --privileges="Certificate Identity Mapping Administrators"
+  # Since the role may already be created, an exit code of 2 is expected.
+  if ipa role-add "Cert Mapping Automation" --desc="Allows hosts to match client certificates"; then
+    :
+  else
+    rc=$?
+    if [[ $rc -ne 2 ]]; then
+      return "$rc"
+    fi
+  fi
+
+  # Since the privilege may already be assigned, an exit code of 1 is
+  # expected.
+  if ipa role-add-privilege "Cert Mapping Automation" --privileges="Certificate Identity Mapping Administrators"; then
+    :
+  else
+    rc=$?
+    if [[ $rc -ne 1 ]]; then
+      return "$rc"
+    fi
+  fi
+
   # hostname is defined in the FreeIPA variables file that is
   # sourced toward the top of this file.  Hence we can ignore the
   # "undefined variable" warning from shellcheck.
   #
   # shellcheck disable=SC2154
   ipa role-add-member "Cert Mapping Automation" --hosts="$hostname"
-  set -o errexit
 }
 
 # Destroy all existing kerberos caches and pull a new host keytab from
