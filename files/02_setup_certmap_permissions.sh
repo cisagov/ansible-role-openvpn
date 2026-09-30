@@ -48,4 +48,24 @@ function create_and_assign_permissions_if_needed {
   set -o errexit
 }
 
+# Destroy all existing kerberos caches and pull a new host keytab from
+# FreeIPA.
+function pull_new_host_keytab {
+  # Note that kdestroy and kinit do not offer long-form CLI options.
+  kdestroy -A
+  # hostname is defined in the FreeIPA variables file that is
+  # sourced toward the top of this file.  Hence we can ignore the
+  # "undefined variable" warning from shellcheck.
+  #
+  # shellcheck disable=SC2154
+  kinit -kt /etc/krb5.keytab host/"$hostname"
+}
+
+# Restart the OpenVPN systemd service.
+function restart_openvpn {
+  systemctl restart openvpn-server@primary.service
+}
+
 create_and_assign_permissions_if_needed
+pull_new_host_keytab
+restart_openvpn
