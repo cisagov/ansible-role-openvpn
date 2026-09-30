@@ -18,7 +18,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     [
         ("/etc/openvpn/server/verify-cn.py", 0o700, "root"),
         ("/etc/openvpn/server/verify-cn.yml", 0o400, "root"),
-        ("/usr/local/sbin/02_setup_certmap_permissions.sh", 0o700, "root"),
+        ("/usr/local/sbin/01_setup_certmap_permissions.sh", 0o700, "root"),
     ],
 )
 def test_file(host, file, perms, owner):

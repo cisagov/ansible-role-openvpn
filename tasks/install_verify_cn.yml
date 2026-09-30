@@ -6,7 +6,7 @@
     dest: /usr/local/sbin/
     mode: u=rwx,g=,o=
     owner: root
-    src: 02_setup_certmap_permissions.sh
+    src: 01_setup_certmap_permissions.sh
 
 - name: Install required system packages for common name verification script
   ansible.builtin.package:
