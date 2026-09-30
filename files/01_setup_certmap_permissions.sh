@@ -33,12 +33,12 @@ fi
 # Create the necessary permissions to query against the certificate
 # mapping data stored in FreeIPA if they do not already exist.
 function create_and_assign_permissions_if_needed {
-  # Since the role may already be created, an exit code of 2 is expected.
+  # Since the role may already be created, an exit code of 1 is expected.
   if ipa role-add "Cert Mapping Automation" --desc="Allows hosts to match client certificates"; then
     :
   else
     rc=$?
-    if [[ $rc -ne 2 ]]; then
+    if [[ $rc -ne 1 ]]; then
       return "$rc"
     fi
   fi
