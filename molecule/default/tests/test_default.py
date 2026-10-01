@@ -13,6 +13,23 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts("all")
 
 
+@pytest.mark.parametrize(
+    "file,perms,owner",
+    [
+        ("/etc/openvpn/server/verify-cn.py", 0o700, "root"),
+        ("/etc/openvpn/server/verify-cn.yml", 0o400, "root"),
+        ("/usr/local/sbin/01_setup_certmap_permissions.sh", 0o700, "root"),
+    ],
+)
+def test_file(host, file, perms, owner):
+    """Test that files were copied over correctly."""
+    f = host.file(file)
+    assert f.exists, f"Path {file} does not exist."
+    assert f.is_file, f"Path {file} is not a file."
+    assert f.mode == perms, f"File {file} does not have permissions {perms:#o}."
+    assert f.user == owner, f"File {file} is not owned by {owner}."
+
+
 @pytest.mark.parametrize("setting", [{"net.ipv4.ip_forward": 1}])
 def test_sysctl_settings(host, setting):
     """Test that sysctl values were set properly."""
